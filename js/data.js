@@ -9,7 +9,7 @@ window.MelaniData = {
     name: "Beauty Studio Melani",
     zone: "Comas",
     modality: "A domicilio",
-    whatsappNumber: "51999999999"
+    whatsappNumber: "51914992356"
   },
 
   services: [

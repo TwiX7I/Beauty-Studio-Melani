@@ -34,7 +34,7 @@ Edita `js/data.js`. Los servicios, promociones, galería, preguntas frecuentes y
 En `js/data.js`, modifica:
 
 ```js
-whatsappNumber: "51999999999"
+whatsappNumber: "51914992356"
 ```
 
 Usa el código de país y el número, sin espacios ni símbolos.

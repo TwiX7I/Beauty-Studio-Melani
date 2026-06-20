@@ -52,7 +52,7 @@
   z-index: 3;
   top: 112px;
   left: 20px;
-  width: 53%;
+  width: 57%;
 }
 
 .hero__copy h1 {
@@ -62,12 +62,23 @@
 }
 
 .hero__copy h1 em {
+  display: inline-block;
+  position: relative;
+  z-index: 1;
+  padding-right: 4px;
   color: var(--pink-main);
   font-style: normal;
   font-weight: 500;
+  white-space: nowrap;
+  text-shadow:
+    0 1px 0 var(--white),
+    0 0 7px rgba(255, 255, 255, 0.98),
+    0 0 13px rgba(255, 245, 250, 0.9);
 }
 
 .hero__copy h1 span {
+  display: inline-block;
+  margin-left: 1px;
   color: var(--gold);
   font-size: 22px;
 }
