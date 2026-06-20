@@ -1,0 +1,102 @@
+/* Ajustes mobile-first para los anchos objetivo. */
+@media (max-width: 370px) {
+  .hero__copy h1 {
+    font-size: 33px;
+  }
+
+  .hero__copy p {
+    font-size: 11px;
+  }
+
+  .benefits {
+    margin-inline: 9px;
+  }
+
+  .benefits span {
+    font-size: 9px;
+  }
+
+  .section {
+    padding-inline: 9px;
+  }
+
+  .steps,
+  .services-grid,
+  .gallery-grid {
+    gap: 5px;
+  }
+
+  .step-card {
+    padding-inline: 3px;
+  }
+
+  .step-card p {
+    font-size: 9px;
+  }
+
+  .service-card__body {
+    padding: 6px;
+  }
+
+  .service-card h3 {
+    font-size: 10px;
+  }
+
+  .service-card strong,
+  .service-card p {
+    font-size: 9px;
+  }
+
+  .promotion-card h3 {
+    font-size: 28px;
+  }
+}
+
+@media (min-width: 371px) and (max-width: 390px) {
+  .hero__model {
+    object-position: 53% 31%;
+  }
+}
+
+@media (min-width: 391px) and (max-width: 414px) {
+  .hero__copy h1 {
+    font-size: 38px;
+  }
+}
+
+@media (min-width: 415px) and (max-width: 430px) {
+  .hero__copy {
+    left: 22px;
+  }
+}
+
+/* Por ahora desktop solo presenta la vista móvil centrada. */
+@media (min-width: 600px) {
+  body {
+    padding: 18px 0;
+  }
+
+  .mobile-page {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    border-radius: 25px;
+  }
+
+  .floating-whatsapp {
+    right: calc(50% - 200px);
+    bottom: 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Responsive específico de beneficios y Cómo funciona */
+@media(max-width:370px){.benefits{margin-inline:9px;padding-inline:2px}.benefits span{font-size:9.5px}.benefit-icon{width:44px;height:44px}.benefit-icon svg{width:40px;height:40px}.section--how .steps{gap:28px 12px}.step-card{min-height:208px;padding-inline:8px}.step-card p{font-size:11.5px}.step-card__icon{width:91px;height:91px}.step-card__icon svg{width:54px;height:54px}.step-card:nth-child(odd)::after{right:-13px}}
+@media(min-width:371px) and (max-width:390px){.benefits span{font-size:10px}}

@@ -1,0 +1,182 @@
+.mobile-page {
+  width: 100%;
+  max-width: 430px;
+  min-height: 100vh;
+  margin: 0 auto;
+  overflow-x: hidden;
+  position: relative;
+  background: linear-gradient(180deg, #fff9fc, #fff3f8 48%, #fffafd);
+  box-shadow: 0 0 50px rgba(94, 17, 49, 0.25);
+}
+
+.hero {
+  height: 535px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(145deg, var(--white), #fff0f6);
+}
+
+.hero__model {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% 31%;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0 87%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0 87%, transparent 100%);
+}
+
+.hero__shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255, 253, 253, 0.34), rgba(255, 250, 252, 0.14) 42%, transparent 67%);
+}
+
+.header {
+  position: absolute;
+  z-index: 5;
+  inset: 0 0 auto;
+  height: 105px;
+  padding: 19px 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.hero__copy {
+  position: absolute;
+  z-index: 3;
+  top: 112px;
+  left: 20px;
+  width: 53%;
+}
+
+.hero__copy h1 {
+  margin: 0;
+  font: 600 37px/1.06 var(--font-title);
+  letter-spacing: -1.6px;
+}
+
+.hero__copy h1 em {
+  color: var(--pink-main);
+  font-style: normal;
+  font-weight: 500;
+}
+
+.hero__copy h1 span {
+  color: var(--gold);
+  font-size: 22px;
+}
+
+.hero__copy p {
+  max-width: 205px;
+  margin: 15px 0 0;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.hero__actions {
+  position: absolute;
+  z-index: 4;
+  right: 18px;
+  bottom: 18px;
+  left: 18px;
+  display: grid;
+  gap: 9px;
+}
+
+.section {
+  padding: 30px 14px 0;
+  scroll-margin-top: 12px;
+}
+
+.section--compact {
+  padding-top: 23px;
+}
+
+.section-heading {
+  margin: 0 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.section-heading h2 {
+  margin: 0;
+  color: var(--pink-dark);
+  font: 500 24px/1.1 var(--font-title);
+}
+
+.section-heading i {
+  width: 42px;
+  height: 1px;
+  position: relative;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+
+.section-heading i:last-child {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.section-heading i::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+}
+
+.section-heading i:first-child::after {
+  right: 0;
+}
+
+.section-heading i:last-child::after {
+  left: 0;
+}
+
+.section-heading--plain h2 {
+  font-size: 25px;
+}
+
+.section-heading--plain i {
+  display: none;
+}
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.promotions-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+}
+
+footer {
+  padding: 14px 14px 75px;
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 10px;
+}

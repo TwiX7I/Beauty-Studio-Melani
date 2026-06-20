@@ -1,0 +1,18 @@
+:root {
+  --pink-main: #ff2f8f;
+  --pink-dark: #d91572;
+  --pink-soft: #ffe6f1;
+  --pink-light: #fff5fa;
+  --pink-border: #f8a8c9;
+  --gold: #d8a94a;
+  --text-dark: #2b1e26;
+  --text-muted: #6f5b65;
+  --white: #ffffff;
+  --shadow-soft: 0 12px 30px rgba(255, 47, 143, 0.18);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --font-script: "Great Vibes", "Brush Script MT", "Segoe Script", cursive;
+  --font-title: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", "Segoe UI", Arial, sans-serif;
+}
