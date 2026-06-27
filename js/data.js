@@ -1,21 +1,17 @@
 "use strict";
 
-/**
- * Datos editables del negocio.
- * Cambia aquí precios, textos, imágenes, zona y número de WhatsApp.
- */
 window.MelaniData = {
   BUSINESS_INFO: {
     name: "Beauty Studio Melani",
     zone: "Comas",
     modality: "A domicilio",
-    whatsappNumber: "51914992356"
+    whatsappNumber: "51927377298"
   },
 
   services: [
     {
       id: "unas-acrilicas",
-      name: "Uñas acrílicas",
+      name: "U\u00f1as acr\u00edlicas",
       price: "Desde S/ 50",
       duration: "1h 30min",
       modality: "A domicilio",
@@ -33,7 +29,7 @@ window.MelaniData = {
     },
     {
       id: "diseno-cejas",
-      name: "Diseño de cejas",
+      name: "Dise\u00f1o de cejas",
       price: "Desde S/ 25",
       duration: "30min",
       modality: "A domicilio",
@@ -45,15 +41,17 @@ window.MelaniData = {
   promotions: [
     {
       id: "promo-pinky",
+      label: "Promoci\u00f3n especial",
       name: "Pinky",
-      description: "Uñas acrílicas + esmaltado",
+      description: "U\u00f1as acr\u00edlicas + dise\u00f1o b\u00e1sico",
       price: "S/ 60",
       image: "assets/images/unas-acrilicas.jpg"
     },
     {
-      id: "combo-mirada",
+      id: "promo-mirada",
+      label: "Promoci\u00f3n especial",
       name: "Mirada",
-      description: "Lifting de pestañas + diseño de cejas",
+      description: "Lifting de pesta\u00f1as + dise\u00f1o de cejas",
       price: "S/ 55",
       image: "assets/images/pestanas.jpg"
     }
@@ -61,11 +59,11 @@ window.MelaniData = {
 
   galleryItems: [
     {
-      title: "Uñas acrílicas",
+      title: "U\u00f1as acr\u00edlicas",
       image: "assets/images/unas-acrilicas.jpg"
     },
     {
-      title: "Manicure",
+      title: "Manicure gel",
       image: "assets/images/manicure-gel.jpg"
     },
     {
@@ -73,23 +71,23 @@ window.MelaniData = {
       image: "assets/images/cejas.jpg"
     },
     {
-      title: "Pestañas",
+      title: "Pesta\u00f1as",
       image: "assets/images/pestanas.jpg"
     }
   ],
 
   faqs: [
     {
-      question: "¿Atiendes a domicilio?",
-      answer: "Sí, la atención es a domicilio por el momento en Comas."
+      question: "\u00bfAtiendes a domicilio?",
+      answer: "S\u00ed, por ahora atendemos a domicilio \u00fanicamente en Comas."
     },
     {
-      question: "¿Qué métodos de pago aceptas?",
-      answer: "Puedes consultar los métodos de pago disponibles al confirmar tu reserva por WhatsApp."
+      question: "\u00bfQu\u00e9 m\u00e9todos de pago aceptas?",
+      answer: "Puedes pagar por Yape, Plin, transferencia o efectivo al confirmar tu reserva."
     },
     {
-      question: "¿Cómo reservo una cita?",
-      answer: "Elige un servicio y presiona reservar. Se abrirá WhatsApp con el mensaje listo para confirmar tu atención."
+      question: "\u00bfC\u00f3mo reservo una cita?",
+      answer: "Elige tu servicio y confirma por WhatsApp. Te respondemos r\u00e1pido para coordinar."
     }
   ]
 };

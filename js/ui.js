@@ -57,6 +57,58 @@
     document.querySelector("#coverageButton")?.addEventListener("click", openCoverageQuestion);
   }
 
+  function initPromotionCarousel() {
+    const track = document.querySelector("#promotionsGrid");
+    const nextButton = document.querySelector("#promotionsNext");
+    const dots = [...document.querySelectorAll("[data-promotion-dot]")];
+    if (!track) return;
+
+    const cards = [...track.querySelectorAll(".promotion-card")];
+    if (!cards.length) return;
+
+    function setActiveDot(index) {
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle("is-active", dotIndex === index);
+      });
+    }
+
+    function currentIndex() {
+      const trackLeft = track.getBoundingClientRect().left;
+      let activeIndex = 0;
+      let shortestDistance = Number.POSITIVE_INFINITY;
+
+      cards.forEach((card, index) => {
+        const distance = Math.abs(card.getBoundingClientRect().left - trackLeft);
+        if (distance < shortestDistance) {
+          shortestDistance = distance;
+          activeIndex = index;
+        }
+      });
+
+      return activeIndex;
+    }
+
+    function goToPromotion(index) {
+      const targetIndex = (index + cards.length) % cards.length;
+      cards[targetIndex].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+      setActiveDot(targetIndex);
+    }
+
+    nextButton?.addEventListener("click", () => {
+      goToPromotion(currentIndex() + 1);
+    });
+
+    dots.forEach((dot) => {
+      dot.addEventListener("click", () => {
+        goToPromotion(Number(dot.dataset.promotionDot || 0));
+      });
+    });
+
+    track.addEventListener("scroll", () => {
+      window.requestAnimationFrame(() => setActiveDot(currentIndex()));
+    }, { passive: true });
+  }
+
   function initBusinessInfo() {
     const zone = document.querySelector("#businessZone");
     if (zone) zone.textContent = BUSINESS_INFO.zone;
@@ -79,5 +131,5 @@
     elements.forEach((element) => observer.observe(element));
   }
 
-  window.MelaniUI = { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initBusinessInfo, initAnimations };
+  window.MelaniUI = { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPromotionCarousel, initBusinessInfo, initAnimations };
 })();

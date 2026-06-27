@@ -13,8 +13,10 @@
         <div class="service-card__body">
           <h3>${service.name}</h3>
           <strong>${service.price}</strong>
-          <p><svg><use href="#icon-clock"></use></svg>${service.duration}</p>
-          <p><svg><use href="#icon-home"></use></svg>${service.modality}</p>
+          <ul class="service-card__meta">
+            <li><svg><use href="#icon-clock"></use></svg>${service.duration}</li>
+            <li><svg><use href="#icon-home"></use></svg>${service.modality}</li>
+          </ul>
           <button class="card-button" type="button" data-reserve-id="${service.id}">Reservar</button>
         </div>
       </article>
@@ -25,17 +27,25 @@
     const container = document.querySelector("#promotionsGrid");
     if (!container) return;
 
-    container.innerHTML = promotions.map((promotion) => `
-      <article class="promotion-card reveal">
+    container.innerHTML = promotions.map((promotion, index) => `
+      <article class="promotion-card reveal" data-promotion-index="${index}">
         <div class="promotion-card__body">
+          <span class="promotion-card__label">${promotion.label}</span>
           <h3>${promotion.name} <span>✦</span></h3>
-          <p>${promotion.description.replace(" + ", "<br>+ ")}</p>
+          <p>${promotion.description}</p>
           <strong>${promotion.price}</strong>
-          <button class="card-button" type="button" data-reserve-id="${promotion.id}">Reservar promoción</button>
+          <button class="card-button card-button--compact" type="button" data-reserve-id="${promotion.id}">Reservar promoci&oacute;n</button>
         </div>
-        <img src="${promotion.image}" alt="Promoción ${promotion.name}" loading="lazy">
+        <img src="${promotion.image}" alt="Promoci&oacute;n ${promotion.name}" loading="lazy">
       </article>
     `).join("");
+
+    const dots = document.querySelector("#promotionsDots");
+    if (dots) {
+      dots.innerHTML = promotions.map((promotion, index) => `
+        <button class="promotions-dot${index === 0 ? " is-active" : ""}" type="button" aria-label="Ver promoci&oacute;n ${promotion.name}" data-promotion-dot="${index}"></button>
+      `).join("");
+    }
   }
 
   function renderGallery() {
@@ -57,7 +67,8 @@
     container.innerHTML = faqs.map((faq, index) => `
       <article class="faq-item">
         <button type="button" aria-expanded="false" aria-controls="faq-answer-${index}">
-          ${faq.question}<b aria-hidden="true">⌄</b>
+          <span>${faq.question}</span>
+          <svg aria-hidden="true"><use href="#icon-chevron-down"></use></svg>
         </button>
         <div class="faq-item__answer" id="faq-answer-${index}">
           <p>${faq.answer}</p>

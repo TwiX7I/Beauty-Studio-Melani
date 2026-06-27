@@ -1,89 +1,161 @@
-/* Ajustes mobile-first para los anchos objetivo. */
 @media (max-width: 370px) {
-  .hero__copy h1 {
-    font-size: 33px;
+  .mobile-page {
+    margin: 0 auto;
+    border-radius: 0;
   }
 
-  .hero__copy p {
+  .hero {
+    min-height: 650px;
+    padding-inline: 16px;
+  }
+
+  .brand {
+    max-width: 136px;
+  }
+
+  .brand small {
     font-size: 11px;
   }
 
-  .benefits {
-    margin-inline: 9px;
+  .brand strong {
+    font-size: 40px;
   }
 
-  .benefits span {
-    font-size: 9px;
+  .hero__model-wrap {
+    right: -10px;
+    width: 78%;
+    height: 88%;
+  }
+
+  .hero__copy {
+    width: min(58%, 205px);
+    margin-top: 72px;
+  }
+
+  .hero__copy h1 {
+    font-size: 30px;
+  }
+
+  .hero__copy p {
+    font-size: 12px;
   }
 
   .section {
-    padding-inline: 9px;
+    padding-inline: 16px;
   }
 
-  .steps,
-  .services-grid,
-  .gallery-grid {
-    gap: 5px;
+  .about-card,
+  .final-cta,
+  .footer {
+    margin-inline: 16px;
   }
 
-  .step-card {
-    padding-inline: 3px;
+  .benefits {
+    margin-inline: 16px;
+    padding: 16px 6px;
   }
 
-  .step-card p {
-    font-size: 9px;
-  }
-
-  .service-card__body {
-    padding: 6px;
-  }
-
-  .service-card h3 {
+  .benefits span {
     font-size: 10px;
   }
 
-  .service-card strong,
-  .service-card p {
-    font-size: 9px;
+  .services-grid {
+    gap: 10px;
   }
 
-  .promotion-card h3 {
-    font-size: 28px;
+  .service-card h3 {
+    font-size: 12px;
+  }
+
+  .service-card strong {
+    font-size: 12px;
+  }
+
+  .zone-card {
+    grid-template-columns: 56px 1fr;
+    gap: 12px;
+  }
+
+  .about-card {
+    min-height: 174px;
+    padding: 20px 16px 18px;
+  }
+
+  .about-card__copy {
+    width: min(61%, 210px);
+  }
+
+  .about-card__copy h2 {
+    font-size: 21px;
+  }
+
+  .about-card__copy p {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .about-card__copy em {
+    font-size: 30px;
+  }
+
+  .about-card__portrait {
+    right: -8px;
+    width: 42%;
+    min-width: 120px;
+  }
+
+  .floating-whatsapp {
+    right: 10px;
+    bottom: max(12px, env(safe-area-inset-bottom, 0px) + 8px);
+    width: 60px;
+    height: 60px;
+  }
+
+  .floating-whatsapp__pulse {
+    inset: -3px;
+  }
+
+  .whatsapp-floating-logo--badge {
+    width: 30px;
+    height: 30px;
   }
 }
 
 @media (min-width: 371px) and (max-width: 390px) {
-  .hero__model {
-    object-position: 53% 31%;
+  .hero {
+    min-height: 672px;
+  }
+
+  .hero__copy {
+    width: min(56%, 218px);
   }
 }
 
 @media (min-width: 391px) and (max-width: 414px) {
-  .hero__copy h1 {
-    font-size: 38px;
+  .hero__copy {
+    width: min(55%, 228px);
   }
 }
 
 @media (min-width: 415px) and (max-width: 430px) {
+  .mobile-page {
+    max-width: 430px;
+  }
+
   .hero__copy {
-    left: 22px;
+    width: min(55%, 236px);
   }
 }
 
-/* Por ahora desktop solo presenta la vista móvil centrada. */
 @media (min-width: 600px) {
-  body {
-    padding: 18px 0;
-  }
-
-  .mobile-page {
-    border: 2px solid rgba(255, 255, 255, 0.7);
-    border-radius: 25px;
-  }
-
   .floating-whatsapp {
-    right: calc(50% - 200px);
-    bottom: 28px;
+    right: calc(50% - 178px);
+  }
+
+  .booking-sheet {
+    margin-bottom: 18px;
+    border-radius: 28px;
+    max-height: calc(100vh - 36px);
   }
 }
 
@@ -96,7 +168,3 @@
     transition-duration: 0.01ms !important;
   }
 }
-
-/* Responsive específico de beneficios y Cómo funciona */
-@media(max-width:370px){.benefits{margin-inline:9px;padding-inline:2px}.benefits span{font-size:9.5px}.benefit-icon{width:44px;height:44px}.benefit-icon svg{width:40px;height:40px}.section--how .steps{gap:28px 12px}.step-card{min-height:208px;padding-inline:8px}.step-card p{font-size:11.5px}.step-card__icon{width:91px;height:91px}.step-card__icon svg{width:54px;height:54px}.step-card:nth-child(odd)::after{right:-13px}}
-@media(min-width:371px) and (max-width:390px){.benefits span{font-size:10px}}
