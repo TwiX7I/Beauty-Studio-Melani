@@ -57,6 +57,22 @@
     document.querySelector("#coverageButton")?.addEventListener("click", openCoverageQuestion);
   }
 
+  function initPerformanceMode() {
+    const root = document.documentElement;
+    const cores = Number(navigator.hardwareConcurrency || 0);
+    const memory = Number(navigator.deviceMemory || 0);
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const isSmallAndroid = /Android/i.test(navigator.userAgent) && window.matchMedia("(max-width: 520px)").matches;
+    const isLowCpu = cores > 0 && cores <= 4;
+    const isLowMemory = memory > 0 && memory <= 4;
+    const savesData = Boolean(connection && connection.saveData);
+    const reducesMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (isSmallAndroid || isLowCpu || isLowMemory || savesData || reducesMotion) {
+      root.classList.add("low-performance");
+    }
+  }
+
   function initPromotionCarousel() {
     const track = document.querySelector("#promotionsGrid");
     const nextButton = document.querySelector("#promotionsNext");
@@ -143,5 +159,5 @@
     elements.forEach((element) => observer.observe(element));
   }
 
-  window.MelaniUI = { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPromotionCarousel, initBusinessInfo, initAnimations };
+  window.MelaniUI = { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPerformanceMode, initPromotionCarousel, initBusinessInfo, initAnimations };
 })();

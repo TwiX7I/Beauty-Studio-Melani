@@ -6394,3 +6394,322 @@ body {
     padding-inline: 10px !important;
   }
 }
+
+
+/* Mobile stability layer: keeps the booking flow clean on low-end Android browsers. */
+body.booking-open {
+  overflow: hidden !important;
+}
+
+body.booking-open .floating-whatsapp,
+.booking-open .floating-whatsapp {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.booking-modal {
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  padding: 0 !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  overflow: hidden !important;
+  z-index: 2100 !important;
+}
+
+.booking-modal__backdrop {
+  background: rgba(43, 30, 38, 0.42) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.booking-sheet {
+  width: 100% !important;
+  max-width: 430px !important;
+  height: auto !important;
+  max-height: min(89vh, 760px) !important;
+  max-height: min(89dvh, 760px) !important;
+  margin: 0 auto !important;
+  padding: 12px 16px max(22px, calc(env(safe-area-inset-bottom, 0px) + 18px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  border-bottom: 0 !important;
+  border-radius: 28px 28px 0 0 !important;
+  background: linear-gradient(180deg, #fffafb 0%, #fff2f8 58%, #fff8fb 100%) !important;
+  box-shadow: 0 -14px 34px rgba(43, 30, 38, 0.18) !important;
+  transform: translateY(104%) !important;
+  will-change: transform !important;
+  isolation: isolate !important;
+  background-clip: padding-box !important;
+}
+
+.booking-modal.is-open .booking-sheet {
+  transform: translateY(0) !important;
+}
+
+.booking-sheet__handle {
+  width: 52px !important;
+  height: 5px !important;
+  margin: 0 auto 12px !important;
+  background: rgba(43, 30, 38, 0.16) !important;
+}
+
+.booking-sheet__close {
+  top: 10px !important;
+  right: 12px !important;
+  width: 40px !important;
+  height: 40px !important;
+  box-shadow: 0 8px 18px rgba(236, 15, 108, 0.12) !important;
+}
+
+.booking-sheet h2 {
+  max-width: 304px !important;
+  margin: 0 auto 7px !important;
+  padding: 0 36px !important;
+  font-size: clamp(1.42rem, 6vw, 1.98rem) !important;
+  line-height: 1.08 !important;
+}
+
+.booking-sheet__intro {
+  max-width: 300px !important;
+  margin: 0 auto 14px !important;
+  font-size: 0.86rem !important;
+  line-height: 1.42 !important;
+}
+
+#bookingForm {
+  gap: 10px !important;
+}
+
+.booking-form__row {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 10px !important;
+}
+
+.booking-field {
+  min-width: 0 !important;
+  min-height: 70px !important;
+  padding: 12px 38px 10px 50px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(236, 15, 108, 0.13) !important;
+  border-radius: 19px !important;
+  background: #fff !important;
+  box-shadow: 0 8px 18px rgba(236, 15, 108, 0.055) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  contain: paint !important;
+}
+
+.booking-field--textarea {
+  min-height: 96px !important;
+}
+
+.booking-field__icon {
+  left: 15px !important;
+  top: 21px !important;
+}
+
+.booking-field__content,
+.booking-field__content input,
+.booking-field__content textarea,
+.service-picker-trigger,
+.date-picker-trigger,
+.time-picker-trigger,
+.district-picker-trigger {
+  min-width: 0 !important;
+}
+
+.booking-field__content > span {
+  line-height: 1.14 !important;
+}
+
+.booking-field input,
+.booking-field textarea,
+.service-picker-trigger,
+.date-picker-trigger,
+.time-picker-trigger,
+.district-picker-trigger {
+  overflow: hidden !important;
+  color: var(--text-dark) !important;
+  text-overflow: ellipsis !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.service-picker-trigger span,
+.date-picker-trigger span,
+.time-picker-trigger span,
+.district-picker-trigger span,
+.booking-field input {
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.booking-field textarea {
+  min-height: 42px !important;
+  max-height: 96px !important;
+  resize: vertical !important;
+}
+
+.booking-field__check {
+  right: 12px !important;
+  top: 24px !important;
+}
+
+.booking-resume,
+.booking-message-preview,
+.booking-thanks {
+  overflow: hidden !important;
+  border: 1px solid rgba(236, 15, 108, 0.13) !important;
+  background: #fff !important;
+  box-shadow: 0 8px 18px rgba(236, 15, 108, 0.055) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  contain: paint !important;
+}
+
+.booking-message-preview pre,
+.booking-message-preview textarea {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+}
+
+.service-picker,
+.date-picker,
+.time-picker,
+.district-picker {
+  z-index: 2200 !important;
+  overflow: hidden !important;
+}
+
+.service-picker__backdrop,
+.date-picker__backdrop,
+.time-picker__backdrop,
+.district-picker__backdrop,
+.service-picker.is-open .service-picker__backdrop,
+.date-picker.is-open .date-picker__backdrop,
+.time-picker.is-open .time-picker__backdrop,
+.district-picker.is-open .district-picker__backdrop {
+  background: rgba(43, 30, 38, 0.18) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.service-picker__panel,
+.date-picker__panel,
+.time-picker__panel,
+.district-picker__panel {
+  width: min(430px, calc(100vw - 18px)) !important;
+  max-height: min(78vh, 640px) !important;
+  max-height: min(78dvh, 640px) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  border: 1px solid rgba(255, 255, 255, 0.9) !important;
+  background: linear-gradient(180deg, #fffafb 0%, #fff3f8 100%) !important;
+  box-shadow: 0 -14px 34px rgba(43, 30, 38, 0.18) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  isolation: isolate !important;
+}
+
+.service-picker__list,
+.district-picker__list {
+  overflow-x: hidden !important;
+}
+
+.time-picker__wheels,
+.date-picker__grid,
+.date-picker__weekdays {
+  background: #fff !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.time-picker__wheels::before,
+.time-picker__wheels::after {
+  opacity: 0.92 !important;
+}
+
+.low-performance .reveal,
+.low-performance .reveal-card {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+.low-performance .floating-whatsapp {
+  animation: none !important;
+  box-shadow: 0 10px 24px rgba(236, 15, 108, 0.22) !important;
+}
+
+.low-performance .floating-whatsapp__pulse,
+.low-performance .floating-whatsapp::before,
+.low-performance .floating-whatsapp::after {
+  display: none !important;
+  animation: none !important;
+}
+
+.low-performance .booking-modal *,
+.low-performance .booking-modal *::before,
+.low-performance .booking-modal *::after,
+.low-performance .service-picker *,
+.low-performance .date-picker *,
+.low-performance .time-picker *,
+.low-performance .district-picker * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+.low-performance .booking-sheet,
+.low-performance .service-picker__panel,
+.low-performance .date-picker__panel,
+.low-performance .time-picker__panel,
+.low-performance .district-picker__panel {
+  background: #fff4f9 !important;
+}
+
+.low-performance .booking-field,
+.low-performance .booking-resume,
+.low-performance .booking-message-preview,
+.low-performance .booking-thanks {
+  background: #fff !important;
+}
+
+@media (max-width: 374px) {
+  .booking-sheet {
+    max-height: min(90vh, 740px) !important;
+    max-height: min(90dvh, 740px) !important;
+    padding-inline: 12px !important;
+  }
+
+  .booking-form__row {
+    grid-template-columns: 1fr !important;
+  }
+
+  .booking-sheet h2 {
+    max-width: 270px !important;
+    padding-inline: 30px !important;
+    font-size: clamp(1.34rem, 7vw, 1.78rem) !important;
+  }
+
+  .booking-sheet__intro {
+    max-width: 266px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .booking-field {
+    padding-right: 34px !important;
+  }
+}
