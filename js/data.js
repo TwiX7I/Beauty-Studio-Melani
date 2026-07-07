@@ -5,7 +5,7 @@ window.MelaniData = {
     "name": "Beauty Studio Melani",
     "zone": "Comas",
     "modality": "A domicilio",
-    "whatsappNumber": "51914992356"
+    "whatsappNumber": "51927377298"
   },
   "serviceCategories": [
     {
