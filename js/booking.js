@@ -196,6 +196,26 @@
     let visibleMonth = dateFromValue(dateInput?.value || "") || new Date(today.getFullYear(), today.getMonth(), 1, 12);
     visibleMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth(), 1, 12);
     let timeDraft = parseTimeValue(timeInput?.value || "");
+    let lastDateRenderKey = "";
+    let timePickerRendered = false;
+    let districtPickerRendered = false;
+
+    function hasOpenSecondaryPicker() {
+      return [datePicker, timePicker, districtPicker].some((picker) => picker?.classList.contains("is-open"));
+    }
+
+    function markSecondaryPickerOpen(picker) {
+      if (!picker) return;
+      picker.hidden = false;
+      document.body.classList.add("picker-open");
+    }
+
+    function markSecondaryPickerClosed(picker) {
+      window.setTimeout(() => {
+        if (picker && !picker.classList.contains("is-open")) picker.hidden = true;
+        document.body.classList.toggle("picker-open", hasOpenSecondaryPicker());
+      }, 180);
+    }
 
     function selectedItem() {
       return findItem(serviceSelect.value || "general");
@@ -393,7 +413,7 @@
       return capitalizeText(date.toLocaleDateString("es-PE", { month: "long", year: "numeric" }));
     }
 
-    function renderDatePicker() {
+    function renderDatePicker(force = false) {
       if (!datePickerGrid || !datePickerMonth) return;
       const year = visibleMonth.getFullYear();
       const month = visibleMonth.getMonth();
@@ -401,9 +421,13 @@
       const startOffset = firstDay.getDay();
       const calendarStart = new Date(year, month, 1 - startOffset, 12);
       const selectedValue = dateInput?.value || "";
+      const renderKey = `${year}-${month}-${selectedValue}-${minDateValue}`;
+
+      if (!force && renderKey === lastDateRenderKey) return;
+      lastDateRenderKey = renderKey;
 
       datePickerMonth.textContent = monthTitle(visibleMonth);
-      datePickerGrid.textContent = "";
+      const fragment = document.createDocumentFragment();
 
       for (let index = 0; index < 42; index += 1) {
         const date = new Date(calendarStart);
@@ -422,8 +446,10 @@
           button.disabled = true;
           button.classList.add("is-disabled");
         }
-        datePickerGrid.append(button);
+        fragment.append(button);
       }
+
+      datePickerGrid.replaceChildren(fragment);
     }
 
     function openDatePicker() {
@@ -433,7 +459,7 @@
         ? new Date(selectedDate.getFullYear(), selectedDate.getMonth(), 1, 12)
         : new Date(today.getFullYear(), today.getMonth(), 1, 12);
       renderDatePicker();
-      datePicker.hidden = false;
+      markSecondaryPickerOpen(datePicker);
       requestAnimationFrame(() => {
         datePicker.classList.add("is-open");
         dateTrigger?.setAttribute("aria-expanded", "true");
@@ -444,9 +470,7 @@
       if (!datePicker) return;
       datePicker.classList.remove("is-open");
       dateTrigger?.setAttribute("aria-expanded", "false");
-      window.setTimeout(() => {
-        if (!datePicker.classList.contains("is-open")) datePicker.hidden = true;
-      }, 220);
+      markSecondaryPickerClosed(datePicker);
     }
 
     function selectDate(value) {
@@ -460,7 +484,7 @@
 
     function updateDateMonth(step) {
       visibleMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + step, 1, 12);
-      renderDatePicker();
+      renderDatePicker(true);
     }
 
     function clearDatePicker() {
@@ -482,7 +506,7 @@
       timeTrigger?.setAttribute("aria-label", timeInput.value ? `Hora seleccionada: ${formatTime(timeInput.value)}` : "Seleccionar hora");
     }
 
-    function renderTimePicker() {
+    function renderTimePicker({ scrollSelected = true } = {}) {
       if (!timePicker) return;
       const columns = {
         hour: timePicker.querySelector('[data-time-column="hour"]'),
@@ -495,39 +519,49 @@
         period: timePickerPeriods.map((item) => item)
       };
 
+      if (!timePickerRendered) {
+        Object.entries(columns).forEach(([columnName, column]) => {
+          if (!column) return;
+          const fragment = document.createDocumentFragment();
+          groups[columnName].forEach((item) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "time-picker__option";
+            button.dataset.timePart = columnName;
+            button.dataset.timeValue = item.value;
+            button.textContent = item.label;
+            fragment.append(button);
+          });
+          column.replaceChildren(fragment);
+        });
+        timePickerRendered = true;
+      }
+
       Object.entries(columns).forEach(([columnName, column]) => {
-        if (!column) return;
-        column.textContent = "";
-        groups[columnName].forEach((item) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "time-picker__option";
-          button.dataset.timePart = columnName;
-          button.dataset.timeValue = item.value;
-          button.textContent = item.label;
-          const isSelected = timeDraft[columnName] === item.value;
-          button.classList.toggle("is-selected", isSelected);
-          column.append(button);
+        column?.querySelectorAll("[data-time-value]").forEach((button) => {
+          button.classList.toggle("is-selected", timeDraft[columnName] === button.dataset.timeValue);
         });
       });
 
       if (timePickerValue) timePickerValue.textContent = formatTime(timeDraftToValue(timeDraft));
 
-      window.setTimeout(() => {
-        timePicker.querySelectorAll(".time-picker__column").forEach((column) => {
-          const selected = column.querySelector(".time-picker__option.is-selected");
-          if (!selected) return;
-          const targetTop = selected.offsetTop - ((column.clientHeight - selected.offsetHeight) / 2);
-          column.scrollTo({ top: Math.max(0, targetTop), behavior: "smooth" });
+      if (scrollSelected) {
+        requestAnimationFrame(() => {
+          timePicker.querySelectorAll(".time-picker__column").forEach((column) => {
+            const selected = column.querySelector(".time-picker__option.is-selected");
+            if (!selected) return;
+            const targetTop = selected.offsetTop - ((column.clientHeight - selected.offsetHeight) / 2);
+            column.scrollTo({ top: Math.max(0, targetTop), behavior: "auto" });
+          });
         });
-      }, 40);
+      }
     }
 
     function openTimePicker() {
       if (!timePicker || !timeInput) return;
       timeDraft = parseTimeValue(timeInput.value);
       renderTimePicker();
-      timePicker.hidden = false;
+      markSecondaryPickerOpen(timePicker);
       requestAnimationFrame(() => {
         timePicker.classList.add("is-open");
         timeTrigger?.setAttribute("aria-expanded", "true");
@@ -538,15 +572,13 @@
       if (!timePicker) return;
       timePicker.classList.remove("is-open");
       timeTrigger?.setAttribute("aria-expanded", "false");
-      window.setTimeout(() => {
-        if (!timePicker.classList.contains("is-open")) timePicker.hidden = true;
-      }, 220);
+      markSecondaryPickerClosed(timePicker);
     }
 
     function selectTimePart(part, value) {
       if (!part || !value || !(part in timeDraft)) return;
       timeDraft = { ...timeDraft, [part]: value };
-      renderTimePicker();
+      renderTimePicker({ scrollSelected: true });
     }
 
     function confirmTimePicker() {
@@ -573,9 +605,14 @@
       });
     }
 
-    function renderDistrictPicker() {
+    function renderDistrictPicker(force = false) {
       if (!districtPickerList) return;
-      districtPickerList.textContent = "";
+      if (districtPickerRendered && !force) {
+        updateDistrictTrigger();
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
       districtPickerOptions.forEach((option) => {
         const button = document.createElement("button");
         button.type = "button";
@@ -593,14 +630,18 @@
         const check = createIconUse("icon-check");
         button.append(content, check);
         button.classList.toggle("is-selected", option.value === districtSelect?.value);
-        districtPickerList.append(button);
+        fragment.append(button);
       });
+
+      districtPickerList.replaceChildren(fragment);
+      districtPickerRendered = true;
+      updateDistrictTrigger();
     }
 
     function openDistrictPicker() {
       if (!districtPicker) return;
       renderDistrictPicker();
-      districtPicker.hidden = false;
+      markSecondaryPickerOpen(districtPicker);
       requestAnimationFrame(() => {
         districtPicker.classList.add("is-open");
         districtTrigger?.setAttribute("aria-expanded", "true");
@@ -611,9 +652,7 @@
       if (!districtPicker) return;
       districtPicker.classList.remove("is-open");
       districtTrigger?.setAttribute("aria-expanded", "false");
-      window.setTimeout(() => {
-        if (!districtPicker.classList.contains("is-open")) districtPicker.hidden = true;
-      }, 220);
+      markSecondaryPickerClosed(districtPicker);
     }
 
     function selectDistrict(value) {
@@ -645,12 +684,10 @@
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("booking-open");
+      document.body.classList.remove("picker-open");
     }
 
     renderServicePicker();
-    renderDatePicker();
-    renderTimePicker();
-    renderDistrictPicker();
     updateDateTrigger();
     updateTimeTrigger();
     updateDistrictTrigger();

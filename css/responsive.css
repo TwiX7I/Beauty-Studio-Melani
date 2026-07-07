@@ -6713,3 +6713,296 @@ body.booking-open .floating-whatsapp,
     padding-right: 34px !important;
   }
 }
+
+
+/* Lightweight premium pickers: date, time and district. */
+body.picker-open .floating-whatsapp,
+body.picker-open .whatsapp-float {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.date-picker,
+.time-picker,
+.district-picker {
+  contain: layout paint !important;
+}
+
+.date-picker__backdrop,
+.time-picker__backdrop,
+.district-picker__backdrop,
+.date-picker.is-open .date-picker__backdrop,
+.time-picker.is-open .time-picker__backdrop,
+.district-picker.is-open .district-picker__backdrop {
+  background: rgba(43, 30, 38, 0.16) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transition: opacity 0.16s ease, background-color 0.16s ease !important;
+}
+
+.date-picker__panel,
+.time-picker__panel,
+.district-picker__panel {
+  width: min(430px, calc(100vw - 18px)) !important;
+  max-height: min(78vh, 640px) !important;
+  max-height: min(78dvh, 640px) !important;
+  padding: 12px 14px 15px !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch !important;
+  border: 1px solid rgba(255, 255, 255, 0.92) !important;
+  border-radius: 30px !important;
+  background:
+    linear-gradient(180deg, rgba(255, 251, 253, 0.98) 0%, rgba(255, 243, 248, 0.98) 100%) !important;
+  box-shadow: 0 -10px 24px rgba(43, 30, 38, 0.16) !important;
+  transform: translate3d(0, 14px, 0) !important;
+  opacity: 0 !important;
+  will-change: transform, opacity !important;
+  isolation: isolate !important;
+  transition: transform 0.18s cubic-bezier(.2,.75,.2,1), opacity 0.18s ease !important;
+}
+
+.date-picker.is-open .date-picker__panel,
+.time-picker.is-open .time-picker__panel,
+.district-picker.is-open .district-picker__panel {
+  transform: translate3d(0, 0, 0) !important;
+  opacity: 1 !important;
+}
+
+.date-picker__close,
+.time-picker__close,
+.district-picker__close {
+  box-shadow: 0 8px 18px rgba(236, 15, 108, 0.11) !important;
+  transition: transform 0.14s ease, background-color 0.14s ease !important;
+}
+
+.date-picker__monthbar,
+.time-picker__value,
+.time-picker__wheels,
+.date-picker__grid {
+  background: #fff !important;
+  box-shadow: 0 7px 16px rgba(236, 15, 108, 0.06) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.date-picker__monthbar {
+  margin-bottom: 10px !important;
+}
+
+.date-picker__nav,
+.date-picker__text-button,
+.time-picker__button,
+.district-picker__option {
+  transition: transform 0.14s ease, background-color 0.14s ease, border-color 0.14s ease !important;
+}
+
+.date-picker__nav {
+  background: #fff1f7 !important;
+  box-shadow: none !important;
+}
+
+.date-picker__grid {
+  gap: 4px !important;
+  padding: 9px 7px !important;
+  border-radius: 22px !important;
+}
+
+.date-picker__day {
+  min-height: 35px !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  transform: none !important;
+  contain: paint !important;
+  transition: transform 0.12s ease, color 0.12s ease, background-color 0.12s ease, border-color 0.12s ease !important;
+}
+
+.date-picker__day:active {
+  transform: scale(0.97) !important;
+}
+
+.date-picker__day:not(.is-disabled):hover,
+.date-picker__day:not(.is-disabled):focus-visible {
+  background: rgba(236, 15, 108, 0.09) !important;
+}
+
+.date-picker__day.is-today:not(.is-selected)::after {
+  bottom: 4px !important;
+  width: 3px !important;
+  height: 3px !important;
+}
+
+.date-picker__day.is-selected {
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.52) !important;
+  background: #ec0f6c !important;
+  box-shadow: 0 6px 14px rgba(236, 15, 108, 0.18) !important;
+}
+
+.date-picker__text-button--today,
+.time-picker__button--primary {
+  background: linear-gradient(135deg, #ff4f98, #ec0f6c) !important;
+  box-shadow: 0 8px 18px rgba(236, 15, 108, 0.18) !important;
+}
+
+.time-picker__value {
+  box-shadow: 0 7px 16px rgba(236, 15, 108, 0.065) !important;
+}
+
+.time-picker__wheels {
+  height: 184px !important;
+  gap: 8px !important;
+  padding: 9px !important;
+  border-radius: 22px !important;
+}
+
+.time-picker__wheels::before,
+.time-picker__wheels::after {
+  left: 9px !important;
+  right: 9px !important;
+  height: 34px !important;
+  opacity: 0.92 !important;
+}
+
+.time-picker__wheels::before {
+  background: linear-gradient(180deg, #fff, rgba(255, 255, 255, 0)) !important;
+}
+
+.time-picker__wheels::after {
+  background: linear-gradient(0deg, #fff, rgba(255, 255, 255, 0)) !important;
+}
+
+.time-picker__column {
+  height: 166px !important;
+  max-height: 166px !important;
+  padding-top: 58px !important;
+  padding-bottom: 58px !important;
+  border-radius: 16px !important;
+  background: #fff8fb !important;
+  contain: content !important;
+}
+
+.time-picker__option {
+  box-shadow: none !important;
+  transform: none !important;
+  transition: transform 0.12s ease, color 0.12s ease, background-color 0.12s ease !important;
+}
+
+.time-picker__option:active {
+  transform: scale(0.97) !important;
+}
+
+.time-picker__option.is-selected {
+  color: #fff !important;
+  background: #ec0f6c !important;
+  box-shadow: 0 6px 14px rgba(236, 15, 108, 0.17) !important;
+  transform: none !important;
+}
+
+.time-picker__button--ghost {
+  background: #fff !important;
+}
+
+.district-picker__panel {
+  max-height: min(64vh, 520px) !important;
+}
+
+.district-picker__list {
+  gap: 9px !important;
+}
+
+.district-picker__option {
+  min-height: 64px !important;
+  background: #fff !important;
+  box-shadow: 0 7px 16px rgba(236, 15, 108, 0.055) !important;
+}
+
+.district-picker__option:active {
+  transform: scale(0.99) !important;
+}
+
+.district-picker__option.is-selected {
+  border-color: rgba(236, 15, 108, 0.36) !important;
+  background: #fff1f7 !important;
+  box-shadow: 0 8px 18px rgba(236, 15, 108, 0.08) !important;
+}
+
+.district-picker__option > svg {
+  transition: opacity 0.12s ease, transform 0.12s ease !important;
+}
+
+.low-performance .date-picker *,
+.low-performance .time-picker *,
+.low-performance .district-picker * {
+  animation: none !important;
+  transition-duration: 0.12s !important;
+  transition-property: opacity, transform, background-color, color, border-color !important;
+}
+
+.low-performance .date-picker__panel,
+.low-performance .time-picker__panel,
+.low-performance .district-picker__panel {
+  background: #fff4f9 !important;
+  box-shadow: 0 -8px 20px rgba(43, 30, 38, 0.12) !important;
+  transition: transform 0.14s ease, opacity 0.14s ease !important;
+  will-change: transform, opacity !important;
+}
+
+.low-performance .date-picker__monthbar,
+.low-performance .time-picker__value,
+.low-performance .time-picker__wheels,
+.low-performance .date-picker__grid,
+.low-performance .district-picker__option {
+  box-shadow: 0 5px 12px rgba(236, 15, 108, 0.045) !important;
+}
+
+.low-performance .time-picker__wheels::before,
+.low-performance .time-picker__wheels::after {
+  opacity: 0.75 !important;
+}
+
+.low-performance .date-picker__day.is-selected,
+.low-performance .time-picker__option.is-selected {
+  box-shadow: 0 4px 10px rgba(236, 15, 108, 0.14) !important;
+}
+
+@media (max-width: 414px) {
+  .date-picker__panel,
+  .time-picker__panel,
+  .district-picker__panel {
+    width: calc(100vw - 18px) !important;
+    border-radius: 28px !important;
+  }
+
+  .date-picker__header h3,
+  .time-picker__header h3,
+  .district-picker__header h3 {
+    font-size: 1.62rem !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .date-picker__panel,
+  .time-picker__panel,
+  .district-picker__panel {
+    width: calc(100vw - 12px) !important;
+    padding-inline: 10px !important;
+  }
+
+  .date-picker__grid {
+    gap: 3px !important;
+    padding-inline: 6px !important;
+  }
+
+  .date-picker__day {
+    min-height: 32px !important;
+    font-size: 0.8rem !important;
+  }
+
+  .time-picker__wheels {
+    gap: 6px !important;
+    padding: 8px !important;
+  }
+}
