@@ -1151,3 +1151,99 @@ body.booking-open {
 .booking-submit {
   justify-content: flex-start;
 }
+
+/* Copywriting experience enhancements */
+.hero__reassurance,
+.section-subtitle {
+  color: rgba(43, 30, 38, 0.74);
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.hero__reassurance {
+  position: relative;
+  z-index: 2;
+  width: min(86%, 330px);
+  margin: 8px auto 0;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 47, 143, 0.16);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.58);
+  box-shadow: 0 8px 20px rgba(217, 21, 114, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.section-subtitle {
+  margin: -8px auto 8px;
+  max-width: 290px;
+}
+
+.service-card__note {
+  margin: 4px 0 7px;
+  color: var(--pink-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.final-cta h2 {
+  margin: 0 0 4px;
+  color: var(--pink-dark);
+  font-family: var(--font-serif);
+  font-size: 1.65rem;
+  line-height: 1.05;
+  text-align: center;
+}
+
+.final-cta__lead {
+  margin: 0 0 12px;
+  color: rgba(43, 30, 38, 0.78);
+  font-weight: 700;
+  text-align: center;
+}
+
+.whatsapp-precard,
+.booking-thanks {
+  margin: 14px 0;
+  padding: 13px 14px;
+  border: 1px solid rgba(255, 47, 143, 0.16);
+  border-radius: 20px;
+  background: linear-gradient(135deg, rgba(255, 245, 250, 0.96), rgba(255, 230, 241, 0.64));
+  box-shadow: 0 10px 24px rgba(217, 21, 114, 0.08);
+}
+
+.whatsapp-precard h3,
+.booking-thanks h3 {
+  margin: 0 0 5px;
+  color: var(--pink-dark);
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+}
+
+.whatsapp-precard p,
+.booking-thanks p {
+  margin: 0;
+  color: rgba(43, 30, 38, 0.76);
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.sweet-footer {
+  padding: 8px 24px 82px;
+  color: rgba(43, 30, 38, 0.72);
+  text-align: center;
+}
+
+.sweet-footer p {
+  margin: 3px 0;
+  font-size: 0.8rem;
+}
+
+.sweet-footer em {
+  display: block;
+  margin-top: 6px;
+  color: var(--pink-dark);
+  font-family: var(--font-script);
+  font-size: 1.25rem;
+  font-style: normal;
+}

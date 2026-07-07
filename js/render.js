@@ -1,26 +1,72 @@
 "use strict";
 
 (function createRenderModule() {
-  const { services, promotions, galleryItems, faqs } = window.MelaniData;
+  const { serviceCategories, services, promotions, galleryItems, faqs } = window.MelaniData;
+  let activeServiceCategory = "todos";
 
-  function renderServices() {
+  function categoryLabel(id) {
+    return serviceCategories.find((category) => category.id === id)?.label || "Servicio";
+  }
+
+  function serviceAlt(service) {
+    return `${service.name} profesional a domicilio en Comas`;
+  }
+
+  function sortedServices(list) {
+    return [...list].sort((a, b) => (a.catalogRank || 99) - (b.catalogRank || 99));
+  }
+
+  function visibleServices() {
+    if (activeServiceCategory === "todos") return sortedServices(services).slice(0, 8);
+    return sortedServices(services.filter((service) => service.category === activeServiceCategory));
+  }
+
+  function renderServiceCategoryChips() {
+    const container = document.querySelector("#serviceCategories");
+    if (!container) return;
+
+    container.innerHTML = serviceCategories.map((category) => `
+      <button class="catalog-chip${category.id === activeServiceCategory ? " is-active" : ""}" type="button" data-service-category="${category.id}" aria-pressed="${category.id === activeServiceCategory}">${category.label}</button>
+    `).join("");
+
+    container.querySelectorAll("[data-service-category]").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeServiceCategory = button.dataset.serviceCategory || "todos";
+        renderServices();
+      });
+    });
+  }
+
+  function renderServiceCards() {
     const container = document.querySelector("#servicesGrid");
     if (!container) return;
 
-    container.innerHTML = services.map((service) => `
-      <article class="service-card reveal${service.featured ? " service-card--featured" : ""}">
-        <img src="${service.image}" alt="${service.name}" loading="lazy">
+    const cards = visibleServices();
+    container.innerHTML = cards.map((service, index) => `
+      <article class="service-card reveal reveal-card is-visible${service.featured ? " service-card--featured" : ""}">
+        <div class="service-card__media">
+          <img src="${service.image}" alt="${serviceAlt(service)}" width="${service.imageWidth}" height="${service.imageHeight}" loading="lazy" decoding="async">
+          ${service.popular || index === 0 && activeServiceCategory === "todos" ? '<span class="service-card__badge">M\u00e1s pedido</span>' : ''}
+        </div>
         <div class="service-card__body">
+          <span class="service-card__category">${categoryLabel(service.category)}</span>
           <h3>${service.name}</h3>
-          <strong>${service.price}</strong>
+          <div class="service-price"><small>Desde</small><strong>${service.priceShort || service.price}</strong></div>
           <ul class="service-card__meta">
-            <li><svg><use href="#icon-clock"></use></svg>${service.duration}</li>
-            <li><svg><use href="#icon-home"></use></svg>${service.modality}</li>
+            <li><svg aria-hidden="true"><use href="#icon-clock"></use></svg>${service.duration}</li>
+            <li><svg aria-hidden="true"><use href="#icon-home"></use></svg>${service.modality}</li>
           </ul>
-          <button class="card-button" type="button" data-reserve-id="${service.id}">Reservar</button>
+          <button class="card-button service-button" type="button" data-reserve-id="${service.id}"><span>Quiero este servicio</span><i aria-hidden="true"><svg><use href="#icon-arrow-right"></use></svg></i></button>
         </div>
       </article>
     `).join("");
+
+    container.scrollTo?.({ left: 0, behavior: "smooth" });
+  }
+
+  function renderServices() {
+    renderServiceCategoryChips();
+    renderServiceCards();
   }
 
   function renderPromotions() {
@@ -31,19 +77,19 @@
       <article class="promotion-card reveal" data-promotion-index="${index}">
         <div class="promotion-card__body">
           <span class="promotion-card__label">${promotion.label}</span>
-          <h3>${promotion.name} <span>✦</span></h3>
+          <h3>${promotion.name} <span aria-hidden="true">\u2726</span></h3>
           <p>${promotion.description}</p>
           <strong>${promotion.price}</strong>
-          <button class="card-button card-button--compact" type="button" data-reserve-id="${promotion.id}">Reservar promoci&oacute;n</button>
+          <button class="card-button card-button--compact" type="button" data-reserve-id="${promotion.id}">Reservar promoci\u00f3n</button>
         </div>
-        <img src="${promotion.image}" alt="Promoci&oacute;n ${promotion.name}" loading="lazy">
+        <img src="${promotion.image}" alt="Promoci\u00f3n ${promotion.name} de Beauty Studio Melani" width="${promotion.imageWidth}" height="${promotion.imageHeight}" loading="lazy" decoding="async">
       </article>
     `).join("");
 
     const dots = document.querySelector("#promotionsDots");
     if (dots) {
       dots.innerHTML = promotions.map((promotion, index) => `
-        <button class="promotions-dot${index === 0 ? " is-active" : ""}" type="button" aria-label="Ver promoci&oacute;n ${promotion.name}" data-promotion-dot="${index}"></button>
+        <button class="promotions-dot${index === 0 ? " is-active" : ""}" type="button" aria-label="Ver promoci\u00f3n ${promotion.name}" data-promotion-dot="${index}"></button>
       `).join("");
     }
   }
@@ -54,7 +100,7 @@
 
     container.innerHTML = galleryItems.map((item) => `
       <figure class="gallery-card reveal">
-        <img src="${item.image}" alt="${item.title}" loading="lazy">
+        <img src="${item.image}" alt="${item.title} realizado por Beauty Studio Melani" width="${item.imageWidth}" height="${item.imageHeight}" loading="lazy" decoding="async">
         <figcaption>${item.title}</figcaption>
       </figure>
     `).join("");

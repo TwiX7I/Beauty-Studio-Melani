@@ -1,19 +1,23 @@
 :root {
-  --pink-main: #ff2f8a;
+  --pink-main: #ec0f6c;
   --pink-strong: #ec0f6c;
   --pink-gradient-start: #ff5fa2;
   --pink-gradient-end: #e9006d;
-  --pink-soft: #ffeaf3;
+  --pink-soft: #fff1f7;
+  --pink-light: #ffd6e9;
   --pink-perla: #fff4f8;
   --pink-shell: #fff7fa;
   --pink-border: rgba(255, 47, 138, 0.18);
-  --gold: #d8a43d;
-  --text-dark: #25151d;
+  --gold: #d8b25a;
+  --text-dark: #2e1f28;
+  --text-main: var(--text-dark);
   --text-muted: #6f5964;
-  --white: #fffbfc;
+  --white: #ffffff;
+  --card-bg: #fffbfc;
   --shadow-card: 0 18px 38px rgba(236, 15, 108, 0.12);
   --shadow-button: 0 16px 32px rgba(233, 0, 109, 0.28);
   --shadow-shell: 0 32px 80px rgba(236, 15, 108, 0.18);
+  --shadow-pink: 0 18px 40px rgba(236, 15, 108, 0.16);
   --radius-sm: 18px;
   --radius-md: 24px;
   --radius-lg: 32px;

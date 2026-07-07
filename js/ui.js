@@ -1,8 +1,8 @@
-﻿"use strict";
+"use strict";
 
 (function createUiModule() {
   const { BUSINESS_INFO } = window.MelaniData;
-  const { openWhatsApp, openCoverageQuestion } = window.MelaniWhatsApp;
+  const { openCoverageQuestion } = window.MelaniWhatsApp;
 
   function initMenu() {
     const button = document.querySelector("#menuButton");
@@ -53,7 +53,7 @@
   }
 
   function initFloatingWhatsApp() {
-    document.querySelector("#floatingWhatsapp")?.addEventListener("click", () => openWhatsApp("Consulta de servicios", "A consultar"));
+    document.querySelector("#floatingWhatsapp")?.setAttribute("data-reserve-id", "general");
     document.querySelector("#coverageButton")?.addEventListener("click", openCoverageQuestion);
   }
 
@@ -115,6 +115,18 @@
   }
 
   function initAnimations() {
+    const sections = document.querySelectorAll(".section, .benefits, .about-card, .final-cta, .sweet-footer");
+    const staggerGroups = document.querySelectorAll(".benefits, .steps, .services-grid, .promotions-grid, .gallery-grid, .faq-list");
+
+    sections.forEach((section) => section.classList.add("reveal"));
+
+    staggerGroups.forEach((group) => {
+      [...group.children].forEach((child, index) => {
+        child.classList.add("reveal", "reveal-card");
+        child.style.setProperty("--reveal-delay", `${Math.min(index * 80, 320)}ms`);
+      });
+    });
+
     const elements = document.querySelectorAll(".reveal");
     if (!("IntersectionObserver" in window)) {
       elements.forEach((element) => element.classList.add("is-visible"));
@@ -127,7 +139,7 @@
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08 });
+    }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
     elements.forEach((element) => observer.observe(element));
   }
 
