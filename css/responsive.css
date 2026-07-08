@@ -7324,3 +7324,319 @@ body.booking-open .hero__shade {
   display: none !important;
   animation: none !important;
 }
+
+
+/* Mobile picker portal fix: avoid clipping inside scrolled booking sheet/Safari */
+body > .service-picker,
+body > .date-picker,
+body > .time-picker,
+body > .district-picker {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100svh !important;
+  height: 100dvh !important;
+  z-index: 12000 !important;
+  display: grid !important;
+  align-items: end !important;
+  justify-items: center !important;
+  padding: 10px 8px max(10px, env(safe-area-inset-bottom, 0px)) !important;
+  overflow: hidden !important;
+  contain: layout paint !important;
+  pointer-events: none !important;
+}
+
+body > .service-picker.is-open,
+body > .date-picker.is-open,
+body > .time-picker.is-open,
+body > .district-picker.is-open {
+  pointer-events: auto !important;
+}
+
+body > .service-picker[hidden],
+body > .date-picker[hidden],
+body > .time-picker[hidden],
+body > .district-picker[hidden] {
+  display: none !important;
+}
+
+body > .service-picker .service-picker__backdrop,
+body > .date-picker .date-picker__backdrop,
+body > .time-picker .time-picker__backdrop,
+body > .district-picker .district-picker__backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 12000 !important;
+  background: rgba(46, 31, 40, 0.24) !important;
+  border: 0 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+}
+
+body > .service-picker .service-picker__panel,
+body > .date-picker .date-picker__panel,
+body > .time-picker .time-picker__panel,
+body > .district-picker .district-picker__panel {
+  position: relative !important;
+  z-index: 12010 !important;
+  width: min(430px, calc(100vw - 18px)) !important;
+  max-width: calc(100vw - 18px) !important;
+  max-height: calc(100vh - 28px - env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(100svh - 28px - env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(100dvh - 28px - env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  border-radius: 28px !important;
+  background: linear-gradient(180deg, #fffafb 0%, #fff2f8 100%) !important;
+  box-shadow: 0 -12px 28px rgba(46, 31, 40, 0.18) !important;
+  transform: translate3d(0, 14px, 0) !important;
+  transition: transform 0.18s ease, opacity 0.18s ease !important;
+  will-change: transform, opacity !important;
+}
+
+body > .service-picker.is-open .service-picker__panel,
+body > .date-picker.is-open .date-picker__panel,
+body > .time-picker.is-open .time-picker__panel,
+body > .district-picker.is-open .district-picker__panel {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+body > .service-picker .service-picker__list,
+body > .district-picker .district-picker__list {
+  max-height: calc(100dvh - 142px - env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  padding-bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+}
+
+body > .service-picker .service-picker__option,
+body > .district-picker .district-picker__option {
+  flex-shrink: 0 !important;
+}
+
+@supports not (height: 100dvh) {
+  body > .service-picker,
+  body > .date-picker,
+  body > .time-picker,
+  body > .district-picker {
+    height: -webkit-fill-available !important;
+  }
+}
+
+@media (max-width: 380px) {
+  body > .service-picker,
+  body > .date-picker,
+  body > .time-picker,
+  body > .district-picker {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  body > .service-picker .service-picker__panel,
+  body > .date-picker .date-picker__panel,
+  body > .time-picker .time-picker__panel,
+  body > .district-picker .district-picker__panel {
+    width: calc(100vw - 12px) !important;
+    max-width: calc(100vw - 12px) !important;
+    border-radius: 24px !important;
+  }
+}
+
+
+/* Hard scroll lock for booking modal on iPhone/Safari */
+html.page-scroll-locked,
+html.booking-open,
+body.page-scroll-locked,
+body.booking-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+body.page-scroll-locked {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+}
+
+html.page-scroll-locked .mobile-page,
+body.page-scroll-locked .mobile-page,
+html.page-scroll-locked main,
+body.page-scroll-locked main {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+.booking-modal.is-open {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100svh !important;
+  height: 100dvh !important;
+  z-index: 9000 !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+.booking-modal.is-open .booking-modal__backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100svh !important;
+  height: 100dvh !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+.booking-modal.is-open .booking-sheet {
+  max-height: calc(100vh - 18px - env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(100svh - 18px - env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(100dvh - 18px - env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+}
+
+body > .service-picker.is-open,
+body > .date-picker.is-open,
+body > .time-picker.is-open,
+body > .district-picker.is-open {
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+}
+
+body > .service-picker.is-open .service-picker__panel,
+body > .date-picker.is-open .date-picker__panel,
+body > .time-picker.is-open .time-picker__panel,
+body > .district-picker.is-open .district-picker__panel,
+body > .service-picker.is-open .service-picker__list,
+body > .district-picker.is-open .district-picker__list {
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+
+
+/* Booking form cleanup: no green checks, readable date/time fields */
+.booking-field__check,
+.booking-field.is-complete .booking-field__check,
+#bookingForm .booking-field__check {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+#bookingForm .booking-field {
+  padding-right: 16px !important;
+}
+
+#bookingForm .booking-field--service,
+#bookingForm .booking-field--district {
+  padding-right: 18px !important;
+}
+
+#bookingForm .booking-field--date,
+#bookingForm .booking-field--time {
+  min-height: 74px !important;
+  padding: 12px 12px 10px 42px !important;
+}
+
+#bookingForm .booking-field--date .booking-field__icon,
+#bookingForm .booking-field--time .booking-field__icon {
+  left: 14px !important;
+  top: 23px !important;
+  width: 19px !important;
+  height: 19px !important;
+}
+
+#bookingForm .booking-field--date .booking-field__icon svg,
+#bookingForm .booking-field--time .booking-field__icon svg {
+  width: 19px !important;
+  height: 19px !important;
+}
+
+#bookingForm .booking-field--date .booking-field__content,
+#bookingForm .booking-field--time .booking-field__content {
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+#bookingForm .date-picker-trigger,
+#bookingForm .time-picker-trigger {
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 32px !important;
+  gap: 4px !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  font-size: clamp(0.86rem, 3.45vw, 0.96rem) !important;
+  line-height: 1.05 !important;
+}
+
+#bookingForm .date-picker-trigger span,
+#bookingForm .time-picker-trigger span {
+  min-width: 0 !important;
+  flex: 1 1 auto !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  white-space: nowrap !important;
+  letter-spacing: -0.015em !important;
+}
+
+#bookingForm .date-picker-trigger svg,
+#bookingForm .time-picker-trigger svg,
+#bookingForm .service-picker-trigger svg,
+#bookingForm .district-picker-trigger svg {
+  width: 15px !important;
+  height: 15px !important;
+  flex: 0 0 15px !important;
+  color: var(--pink-main) !important;
+}
+
+@media (max-width: 380px) {
+  #bookingForm .booking-form__row {
+    gap: 8px !important;
+  }
+
+  #bookingForm .booking-field--date,
+  #bookingForm .booking-field--time {
+    padding-left: 38px !important;
+    padding-right: 10px !important;
+  }
+
+  #bookingForm .booking-field--date .booking-field__icon,
+  #bookingForm .booking-field--time .booking-field__icon {
+    left: 12px !important;
+    width: 18px !important;
+    height: 18px !important;
+  }
+
+  #bookingForm .date-picker-trigger,
+  #bookingForm .time-picker-trigger {
+    font-size: 0.84rem !important;
+    gap: 3px !important;
+  }
+
+  #bookingForm .date-picker-trigger svg,
+  #bookingForm .time-picker-trigger svg {
+    width: 13px !important;
+    height: 13px !important;
+    flex-basis: 13px !important;
+  }
+}

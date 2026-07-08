@@ -93,7 +93,7 @@
     if (!hour || !minute) return value;
     const hourNumber = Number(hour);
     const hour12 = hourNumber % 12 || 12;
-    const period = hourNumber >= 12 ? "p. m." : "a. m.";
+    const period = hourNumber >= 12 ? "p.m." : "a.m.";
     return `${String(hour12).padStart(2, "0")}:${minute} ${period}`;
   }
 
@@ -185,6 +185,12 @@
     const editPreviewButton = document.querySelector("#editPreviewButton");
     if (!modal || !form || !serviceSelect) return;
 
+    [servicePicker, datePicker, timePicker, districtPicker].forEach((picker) => {
+      if (picker && picker.parentElement !== document.body) {
+        document.body.append(picker);
+      }
+    });
+
     serviceSelect.innerHTML = buildServiceOptions();
     if (districtSelect && !districtSelect.value) districtSelect.value = BUSINESS_INFO.zone;
 
@@ -199,6 +205,94 @@
     let lastDateRenderKey = "";
     let timePickerRendered = false;
     let districtPickerRendered = false;
+    let pageScrollLock = null;
+    let touchStartY = 0;
+
+    function lockPageScroll() {
+      if (pageScrollLock) return;
+      const scrollY = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop || 0;
+      const main = document.querySelector(".mobile-page") || document.querySelector("main");
+      const targets = [document.documentElement, document.body, main].filter(Boolean);
+      pageScrollLock = {
+        scrollY,
+        main,
+        styles: targets.map((element) => ({
+          element,
+          position: element.style.position,
+          top: element.style.top,
+          left: element.style.left,
+          right: element.style.right,
+          width: element.style.width,
+          overflow: element.style.overflow,
+          overflowY: element.style.overflowY,
+          touchAction: element.style.touchAction,
+          overscrollBehavior: element.style.overscrollBehavior,
+        })),
+      };
+
+      document.documentElement.classList.add("booking-open", "page-scroll-locked");
+      document.body.classList.add("booking-open", "page-scroll-locked");
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.overscrollBehavior = "none";
+      document.documentElement.style.touchAction = "none";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      document.body.style.overscrollBehavior = "none";
+      document.body.style.touchAction = "none";
+      if (main) {
+        main.style.overflow = "hidden";
+        main.style.overflowY = "hidden";
+        main.style.overscrollBehavior = "none";
+        main.style.touchAction = "none";
+      }
+    }
+
+    function unlockPageScroll() {
+      if (!pageScrollLock) return;
+      const { scrollY, styles } = pageScrollLock;
+      styles.forEach(({ element, ...saved }) => {
+        Object.entries(saved).forEach(([property, value]) => {
+          element.style[property] = value;
+        });
+      });
+      document.documentElement.classList.remove("booking-open", "page-scroll-locked");
+      document.body.classList.remove("booking-open", "page-scroll-locked");
+      pageScrollLock = null;
+      window.scrollTo(0, scrollY);
+    }
+
+    function scrollablePickerTarget(target) {
+      return target.closest(".booking-sheet, .service-picker__panel, .date-picker__panel, .time-picker__panel, .district-picker__panel");
+    }
+
+    function preventBackgroundTouchMove(event) {
+      if (!pageScrollLock) return;
+      const scrollable = scrollablePickerTarget(event.target);
+      if (!scrollable) {
+        event.preventDefault();
+        return;
+      }
+
+      const currentY = event.touches?.[0]?.clientY ?? touchStartY;
+      const deltaY = currentY - touchStartY;
+      const atTop = scrollable.scrollTop <= 0;
+      const atBottom = Math.ceil(scrollable.scrollTop + scrollable.clientHeight) >= scrollable.scrollHeight;
+      const cannotScroll = scrollable.scrollHeight <= scrollable.clientHeight + 1;
+
+      if (cannotScroll || (atTop && deltaY > 0) || (atBottom && deltaY < 0)) {
+        event.preventDefault();
+      }
+    }
+
+    document.addEventListener("touchstart", (event) => {
+      touchStartY = event.touches?.[0]?.clientY || 0;
+    }, { passive: true });
+
+    document.addEventListener("touchmove", preventBackgroundTouchMove, { passive: false });
 
     function hasOpenSecondaryPicker() {
       return [servicePicker, datePicker, timePicker, districtPicker].some((picker) => picker?.classList.contains("is-open"));
@@ -667,9 +761,9 @@
       if (thanks) thanks.hidden = true;
       if (previewEditor) previewEditor.hidden = true;
       if (editPreviewButton) editPreviewButton.textContent = "Editar mensaje";
+      lockPageScroll();
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
-      document.body.classList.add("booking-open");
       updateSummary();
       window.setTimeout(() => form.elements.name.focus(), 320);
     }
@@ -681,8 +775,8 @@
       closeDistrictPicker();
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
-      document.body.classList.remove("booking-open");
       document.body.classList.remove("picker-open");
+      unlockPageScroll();
     }
 
     renderServicePicker();
