@@ -52,23 +52,47 @@
     });
   }
 
+  function initDirectWhatsappLinks() {
+    document.querySelectorAll("[data-direct-whatsapp]").forEach((link) => {
+      if (link.dataset.directWhatsappReady === "true") return;
+      link.dataset.directWhatsappReady = "true";
+      link.addEventListener("click", (event) => {
+        if (link.dataset.tapLocked === "true") {
+          event.preventDefault();
+          return;
+        }
+        link.dataset.tapLocked = "true";
+        window.setTimeout(() => {
+          delete link.dataset.tapLocked;
+        }, 1200);
+      }, { passive: false });
+    });
+  }
+
   function initFloatingWhatsApp() {
-    document.querySelector("#floatingWhatsapp")?.setAttribute("data-reserve-id", "general");
+    const floatingWhatsapp = document.querySelector("#floatingWhatsapp");
+    if (floatingWhatsapp && !floatingWhatsapp.matches("[data-direct-whatsapp]")) {
+      floatingWhatsapp.setAttribute("data-reserve-id", "general");
+    }
+    initDirectWhatsappLinks();
     document.querySelector("#coverageButton")?.addEventListener("click", openCoverageQuestion);
   }
 
   function initPerformanceMode() {
     const root = document.documentElement;
+    const params = new URLSearchParams(window.location.search);
     const cores = Number(navigator.hardwareConcurrency || 0);
     const memory = Number(navigator.deviceMemory || 0);
     const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const isSmallAndroid = /Android/i.test(navigator.userAgent) && window.matchMedia("(max-width: 520px)").matches;
+    const isSmallAndroid = /Android/i.test(navigator.userAgent) && window.matchMedia("(max-width: 560px)").matches;
     const isLowCpu = cores > 0 && cores <= 4;
     const isLowMemory = memory > 0 && memory <= 4;
     const savesData = Boolean(connection && connection.saveData);
+    const slowConnection = Boolean(connection && ["slow-2g", "2g", "3g"].includes(connection.effectiveType));
     const reducesMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const manualLite = params.get("lite") === "1" || params.get("low") === "1";
 
-    if (isSmallAndroid || isLowCpu || isLowMemory || savesData || reducesMotion) {
+    if (manualLite || isSmallAndroid || isLowCpu || isLowMemory || savesData || slowConnection || reducesMotion) {
       root.classList.add("low-performance");
     }
   }

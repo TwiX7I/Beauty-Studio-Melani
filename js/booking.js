@@ -201,7 +201,7 @@
     let districtPickerRendered = false;
 
     function hasOpenSecondaryPicker() {
-      return [datePicker, timePicker, districtPicker].some((picker) => picker?.classList.contains("is-open"));
+      return [servicePicker, datePicker, timePicker, districtPicker].some((picker) => picker?.classList.contains("is-open"));
     }
 
     function markSecondaryPickerOpen(picker) {
@@ -379,7 +379,7 @@
 
     function openServicePicker() {
       if (!servicePicker) return;
-      servicePicker.hidden = false;
+      markSecondaryPickerOpen(servicePicker);
       requestAnimationFrame(() => {
         servicePicker.classList.add("is-open");
         serviceTrigger?.setAttribute("aria-expanded", "true");
@@ -390,9 +390,7 @@
       if (!servicePicker) return;
       servicePicker.classList.remove("is-open");
       serviceTrigger?.setAttribute("aria-expanded", "false");
-      window.setTimeout(() => {
-        if (!servicePicker.classList.contains("is-open")) servicePicker.hidden = true;
-      }, 220);
+      markSecondaryPickerClosed(servicePicker);
     }
 
     function selectService(id) {
@@ -746,7 +744,7 @@
 
     document.addEventListener("click", (event) => {
       const reserveButton = event.target.closest("[data-reserve-id]");
-      if (reserveButton) {
+      if (reserveButton && !reserveButton.matches("[data-direct-whatsapp]")) {
         event.preventDefault();
         open(reserveButton.dataset.reserveId || "general");
       }

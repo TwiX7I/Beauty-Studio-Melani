@@ -7006,3 +7006,321 @@ body.picker-open .whatsapp-float {
     padding: 8px !important;
   }
 }
+
+
+/* ==========================================================
+   LOW-END ANDROID STABILITY HOTFIX
+   Solid modal layers, no blur/glass, isolated booking flow.
+   ========================================================== */
+html.low-performance,
+html.low-performance body {
+  scroll-behavior: auto !important;
+}
+
+html.low-performance *,
+html.low-performance *::before,
+html.low-performance *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.12s !important;
+  scroll-behavior: auto !important;
+}
+
+body.booking-open {
+  overflow: hidden !important;
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+body.booking-open .mobile-page,
+body.booking-open main,
+body.booking-open .hero,
+body.booking-open .header {
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  perspective: none !important;
+}
+
+body.booking-open .hero__model-wrap,
+body.booking-open .hero__shade,
+body.booking-open .hero::before,
+body.booking-open .hero::after,
+body.booking-open .floating-whatsapp,
+body.picker-open .floating-whatsapp,
+body.booking-open .floating-whatsapp__pulse,
+body.booking-open .floating-whatsapp::before,
+body.booking-open .floating-whatsapp::after {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+
+body.booking-open .hero__model-wrap,
+body.booking-open .hero__shade {
+  display: none !important;
+}
+
+.booking-modal {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9000 !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  contain: layout paint !important;
+  background: transparent !important;
+}
+
+.booking-modal__backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 9000 !important;
+  background: rgba(46, 31, 40, 0.42) !important;
+  opacity: 1 !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+}
+
+.booking-sheet {
+  position: relative !important;
+  z-index: 9100 !important;
+  width: 100% !important;
+  max-width: 430px !important;
+  max-height: min(92vh, 760px) !important;
+  max-height: min(92dvh, 760px) !important;
+  margin: 0 auto !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  border-radius: 30px 30px 0 0 !important;
+  background: linear-gradient(180deg, #fff8fb 0%, #fff1f7 100%) !important;
+  background-color: #fff4f9 !important;
+  background-clip: padding-box !important;
+  box-shadow: 0 -12px 28px rgba(46, 31, 40, 0.18) !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  mix-blend-mode: normal !important;
+  transform: translate3d(0, 104%, 0) !important;
+  transition: transform 0.2s ease, opacity 0.2s ease !important;
+  will-change: transform !important;
+}
+
+.booking-modal.is-open .booking-sheet {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.booking-sheet *,
+.service-picker *,
+.date-picker *,
+.time-picker *,
+.district-picker * {
+  mix-blend-mode: normal !important;
+}
+
+.booking-field,
+.booking-resume,
+.booking-thanks,
+.booking-message-preview,
+.booking-field input,
+.booking-field textarea,
+.service-picker-trigger,
+.date-picker-trigger,
+.time-picker-trigger,
+.district-picker-trigger {
+  opacity: 1 !important;
+  background-color: #fff !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 7px 16px rgba(236, 15, 108, 0.055) !important;
+}
+
+.service-picker,
+.date-picker,
+.time-picker,
+.district-picker {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9200 !important;
+  isolation: isolate !important;
+  contain: layout paint !important;
+  overflow: hidden !important;
+}
+
+.service-picker__backdrop,
+.date-picker__backdrop,
+.time-picker__backdrop,
+.district-picker__backdrop,
+.service-picker.is-open .service-picker__backdrop,
+.date-picker.is-open .date-picker__backdrop,
+.time-picker.is-open .time-picker__backdrop,
+.district-picker.is-open .district-picker__backdrop {
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: 9200 !important;
+  background: rgba(46, 31, 40, 0.22) !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+}
+
+.service-picker__panel,
+.date-picker__panel,
+.time-picker__panel,
+.district-picker__panel {
+  position: relative !important;
+  z-index: 9210 !important;
+  width: min(430px, calc(100vw - 18px)) !important;
+  max-height: min(78vh, 640px) !important;
+  max-height: min(78dvh, 640px) !important;
+  margin-bottom: max(8px, env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  isolation: isolate !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(255, 255, 255, 0.94) !important;
+  border-radius: 28px !important;
+  background: linear-gradient(180deg, #fff8fb 0%, #fff1f7 100%) !important;
+  background-color: #fff4f9 !important;
+  background-clip: padding-box !important;
+  box-shadow: 0 -10px 24px rgba(46, 31, 40, 0.16) !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: translate3d(0, 14px, 0) !important;
+  transition: transform 0.18s ease, opacity 0.18s ease !important;
+  will-change: transform, opacity !important;
+}
+
+.service-picker.is-open .service-picker__panel,
+.date-picker.is-open .date-picker__panel,
+.time-picker.is-open .time-picker__panel,
+.district-picker.is-open .district-picker__panel {
+  transform: translate3d(0, 0, 0) !important;
+}
+
+.service-picker__option,
+.date-picker__monthbar,
+.date-picker__grid,
+.time-picker__value,
+.time-picker__wheels,
+.time-picker__column,
+.district-picker__option {
+  background-color: #fff !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: 0 5px 12px rgba(236, 15, 108, 0.045) !important;
+}
+
+.time-picker__wheels::before {
+  background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+.time-picker__wheels::after {
+  background: linear-gradient(0deg, #fff 0%, rgba(255, 255, 255, 0) 100%) !important;
+}
+
+.low-performance .hero__model,
+.low-performance .hero__model-wrap,
+.low-performance .hero__shade,
+.low-performance .hero::before,
+.low-performance .hero::after,
+.low-performance .floating-whatsapp__pulse,
+.low-performance .floating-whatsapp::before,
+.low-performance .floating-whatsapp::after {
+  animation: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.low-performance .header,
+.low-performance .hero__eyebrow,
+.low-performance .hero .button--secondary,
+.low-performance .benefits,
+.low-performance .quick-benefits-card,
+.low-performance .service-card,
+.low-performance .promotion-card,
+.low-performance .gallery-card,
+.low-performance .about-card,
+.low-performance .final-cta {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+}
+
+.low-performance .service-picker__panel,
+.low-performance .date-picker__panel,
+.low-performance .time-picker__panel,
+.low-performance .district-picker__panel,
+.low-performance .booking-sheet {
+  box-shadow: 0 -8px 20px rgba(46, 31, 40, 0.14) !important;
+}
+
+@media (max-width: 420px) {
+  .booking-sheet {
+    max-height: min(91vh, 740px) !important;
+    max-height: min(91dvh, 740px) !important;
+  }
+
+  .service-picker__panel,
+  .date-picker__panel,
+  .time-picker__panel,
+  .district-picker__panel {
+    width: calc(100vw - 14px) !important;
+  }
+}
+
+
+/* Fast WhatsApp CTAs: direct links instead of opening the booking sheet */
+.button[data-direct-whatsapp],
+.floating-whatsapp[data-direct-whatsapp],
+.footer-social[data-direct-whatsapp] {
+  text-decoration: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button[data-direct-whatsapp][data-tap-locked="true"],
+.floating-whatsapp[data-direct-whatsapp][data-tap-locked="true"],
+.footer-social[data-direct-whatsapp][data-tap-locked="true"] {
+  pointer-events: none;
+  opacity: 0.96;
+}
+
+.low-performance .hero .button--primary[data-direct-whatsapp],
+.low-performance .floating-whatsapp[data-direct-whatsapp],
+.low-performance .final-cta__button[data-direct-whatsapp] {
+  animation: none !important;
+  transition: transform 0.14s ease, opacity 0.14s ease !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.low-performance .hero .button--primary[data-direct-whatsapp] {
+  box-shadow: 0 10px 22px rgba(236, 15, 108, 0.22) !important;
+}
+
+.low-performance .floating-whatsapp[data-direct-whatsapp] .floating-whatsapp__pulse,
+.low-performance .floating-whatsapp[data-direct-whatsapp]::before,
+.low-performance .floating-whatsapp[data-direct-whatsapp]::after {
+  display: none !important;
+  animation: none !important;
+}
