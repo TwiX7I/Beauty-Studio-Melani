@@ -207,6 +207,50 @@
     let districtPickerRendered = false;
     let pageScrollLock = null;
     let touchStartY = 0;
+    let focusScrollTimer = 0;
+
+    function setModalStateClass(name, enabled) {
+      document.documentElement.classList.toggle(name, enabled);
+      document.body.classList.toggle(name, enabled);
+    }
+
+    function updateViewportState() {
+      const viewport = window.visualViewport;
+      if (!viewport) {
+        document.documentElement.style.setProperty("--booking-viewport-height", "100dvh");
+        document.documentElement.style.setProperty("--booking-keyboard-offset", "0px");
+        setModalStateClass("keyboard-open", false);
+        return;
+      }
+
+      const height = Math.round(viewport.height);
+      const keyboardOffset = Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop));
+      const keyboardOpen = Boolean(pageScrollLock && keyboardOffset > 80);
+      document.documentElement.style.setProperty("--booking-viewport-height", `${height}px`);
+      document.documentElement.style.setProperty("--booking-keyboard-offset", `${keyboardOffset}px`);
+      setModalStateClass("keyboard-open", keyboardOpen);
+    }
+
+    function clearViewportState() {
+      window.clearTimeout(focusScrollTimer);
+      document.documentElement.style.removeProperty("--booking-viewport-height");
+      document.documentElement.style.removeProperty("--booking-keyboard-offset");
+      setModalStateClass("keyboard-open", false);
+    }
+
+    function keepFocusedFieldVisible(field) {
+      if (!pageScrollLock || !field?.closest("#bookingForm")) return;
+      const target = field.closest(".booking-field, .booking-message-preview") || field;
+      window.clearTimeout(focusScrollTimer);
+      focusScrollTimer = window.setTimeout(() => {
+        updateViewportState();
+        target.scrollIntoView({
+          block: "center",
+          inline: "nearest",
+          behavior: document.documentElement.classList.contains("low-performance") ? "auto" : "smooth"
+        });
+      }, 120);
+    }
 
     function lockPageScroll() {
       if (pageScrollLock) return;
@@ -232,9 +276,11 @@
 
       document.documentElement.classList.add("booking-open", "page-scroll-locked");
       document.body.classList.add("booking-open", "page-scroll-locked");
+      setModalStateClass("modal-open", true);
+      updateViewportState();
       document.documentElement.style.overflow = "hidden";
       document.documentElement.style.overscrollBehavior = "none";
-      document.documentElement.style.touchAction = "none";
+      document.documentElement.style.touchAction = "pan-y";
       document.body.style.position = "fixed";
       document.body.style.top = `-${scrollY}px`;
       document.body.style.left = "0";
@@ -242,12 +288,12 @@
       document.body.style.width = "100%";
       document.body.style.overflow = "hidden";
       document.body.style.overscrollBehavior = "none";
-      document.body.style.touchAction = "none";
+      document.body.style.touchAction = "pan-y";
       if (main) {
         main.style.overflow = "hidden";
         main.style.overflowY = "hidden";
         main.style.overscrollBehavior = "none";
-        main.style.touchAction = "none";
+        main.style.touchAction = "pan-y";
       }
     }
 
@@ -261,12 +307,14 @@
       });
       document.documentElement.classList.remove("booking-open", "page-scroll-locked");
       document.body.classList.remove("booking-open", "page-scroll-locked");
+      setModalStateClass("modal-open", false);
+      clearViewportState();
       pageScrollLock = null;
       window.scrollTo(0, scrollY);
     }
 
     function scrollablePickerTarget(target) {
-      return target.closest(".booking-sheet, .service-picker__panel, .date-picker__panel, .time-picker__panel, .district-picker__panel");
+      return target.closest(".booking-sheet, .service-picker__list, .service-picker__panel, .date-picker__panel, .time-picker__panel, .district-picker__list, .district-picker__panel");
     }
 
     function preventBackgroundTouchMove(event) {
@@ -293,6 +341,8 @@
     }, { passive: true });
 
     document.addEventListener("touchmove", preventBackgroundTouchMove, { passive: false });
+    window.visualViewport?.addEventListener("resize", updateViewportState, { passive: true });
+    window.visualViewport?.addEventListener("scroll", updateViewportState, { passive: true });
 
     function hasOpenSecondaryPicker() {
       return [servicePicker, datePicker, timePicker, districtPicker].some((picker) => picker?.classList.contains("is-open"));
@@ -871,6 +921,13 @@
     });
 
     form.querySelectorAll("input, select, textarea").forEach((field) => {
+      field.addEventListener("focus", () => {
+        setModalStateClass("keyboard-open", true);
+        keepFocusedFieldVisible(field);
+      });
+      field.addEventListener("blur", () => {
+        window.setTimeout(updateViewportState, 120);
+      });
       field.addEventListener("input", () => {
         if (field.closest("label")?.classList.contains("is-invalid")) validate(field);
         setCompletedState(field);

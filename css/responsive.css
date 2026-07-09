@@ -7755,3 +7755,216 @@ body > .district-picker.is-open .district-picker__list {
     font-size: 0.94rem !important;
   }
 }
+
+
+/* Keyboard-safe booking isolation: final mobile override */
+:root {
+  --booking-viewport-height: 100dvh;
+  --booking-keyboard-offset: 0px;
+}
+
+html.modal-open,
+body.modal-open {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+html.modal-open .mobile-page,
+body.modal-open .mobile-page,
+html.keyboard-open .mobile-page,
+body.keyboard-open .mobile-page {
+  pointer-events: none !important;
+}
+
+html.modal-open .hero__model-wrap,
+html.modal-open .hero__shade,
+html.modal-open .hero::before,
+html.modal-open .hero::after,
+html.keyboard-open .hero__model-wrap,
+html.keyboard-open .hero__shade,
+html.keyboard-open .hero::before,
+html.keyboard-open .hero::after {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  animation: none !important;
+  filter: none !important;
+  transform: none !important;
+}
+
+html.modal-open .floating-whatsapp,
+body.modal-open .floating-whatsapp,
+html.keyboard-open .floating-whatsapp,
+body.keyboard-open .floating-whatsapp {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+
+html.page-scroll-locked,
+html.booking-open,
+html.modal-open,
+body.page-scroll-locked,
+body.booking-open,
+body.modal-open {
+  touch-action: pan-y !important;
+}
+
+body.page-scroll-locked .mobile-page,
+body.booking-open .mobile-page,
+body.modal-open .mobile-page {
+  touch-action: pan-y !important;
+}
+
+.booking-modal.is-open {
+  height: var(--booking-viewport-height, 100dvh) !important;
+  min-height: var(--booking-viewport-height, 100dvh) !important;
+  touch-action: none !important;
+}
+
+.booking-modal.is-open .booking-modal__backdrop {
+  height: var(--booking-viewport-height, 100dvh) !important;
+  min-height: var(--booking-viewport-height, 100dvh) !important;
+}
+
+.booking-modal.is-open .booking-sheet {
+  max-height: calc(var(--booking-viewport-height, 100dvh) - 14px - env(safe-area-inset-bottom, 0px)) !important;
+  padding-bottom: max(18px, calc(env(safe-area-inset-bottom, 0px) + 16px)) !important;
+  touch-action: pan-y !important;
+  contain: layout paint !important;
+}
+
+html.keyboard-open .booking-modal.is-open .booking-sheet,
+body.keyboard-open .booking-modal.is-open .booking-sheet {
+  max-height: calc(var(--booking-viewport-height, 100dvh) - 10px) !important;
+  border-radius: 24px 24px 0 0 !important;
+  box-shadow: 0 -8px 20px rgba(46, 31, 40, 0.14) !important;
+}
+
+html.keyboard-open .booking-sheet__handle,
+body.keyboard-open .booking-sheet__handle {
+  margin-bottom: 8px !important;
+}
+
+html.keyboard-open .booking-sheet h2,
+body.keyboard-open .booking-sheet h2 {
+  font-size: clamp(1.25rem, 5.6vw, 1.72rem) !important;
+  margin-bottom: 4px !important;
+}
+
+html.keyboard-open .booking-sheet__intro,
+body.keyboard-open .booking-sheet__intro {
+  margin-bottom: 10px !important;
+  font-size: 0.8rem !important;
+}
+
+html.keyboard-open #bookingForm,
+body.keyboard-open #bookingForm {
+  gap: 9px !important;
+}
+
+html.keyboard-open .booking-field,
+body.keyboard-open .booking-field {
+  box-shadow: none !important;
+}
+
+html.keyboard-open .booking-resume,
+html.keyboard-open .booking-message-preview,
+body.keyboard-open .booking-resume,
+body.keyboard-open .booking-message-preview {
+  display: none !important;
+}
+
+html.keyboard-open body > .service-picker,
+html.keyboard-open body > .date-picker,
+html.keyboard-open body > .time-picker,
+html.keyboard-open body > .district-picker,
+body.keyboard-open > .service-picker,
+body.keyboard-open > .date-picker,
+body.keyboard-open > .time-picker,
+body.keyboard-open > .district-picker {
+  height: var(--booking-viewport-height, 100dvh) !important;
+}
+
+html.keyboard-open body > .service-picker .service-picker__panel,
+html.keyboard-open body > .date-picker .date-picker__panel,
+html.keyboard-open body > .time-picker .time-picker__panel,
+html.keyboard-open body > .district-picker .district-picker__panel,
+body.keyboard-open > .service-picker .service-picker__panel,
+body.keyboard-open > .date-picker .date-picker__panel,
+body.keyboard-open > .time-picker .time-picker__panel,
+body.keyboard-open > .district-picker .district-picker__panel {
+  max-height: calc(var(--booking-viewport-height, 100dvh) - 18px) !important;
+}
+
+
+/* Service catalog scroll fix: keep the background locked but the list scrollable. */
+body > .service-picker {
+  touch-action: pan-y !important;
+}
+
+body > .service-picker.is-open {
+  touch-action: pan-y !important;
+}
+
+body > .service-picker .service-picker__panel {
+  display: flex !important;
+  flex-direction: column !important;
+  width: min(430px, calc(100vw - 18px)) !important;
+  max-width: calc(100vw - 18px) !important;
+  max-height: min(85vh, 720px) !important;
+  max-height: min(85svh, 720px) !important;
+  max-height: min(85dvh, 720px) !important;
+  overflow: hidden !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+
+body > .service-picker .service-picker__header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 2 !important;
+  flex: 0 0 auto !important;
+  margin: -2px -2px 0 !important;
+  padding: 0 2px 12px !important;
+  background: linear-gradient(180deg, #fff8fb 0%, #fff1f7 100%) !important;
+}
+
+body > .service-picker .service-picker__list {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: calc(85vh - 108px - env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(85svh - 108px - env(safe-area-inset-bottom, 0px)) !important;
+  max-height: calc(85dvh - 108px - env(safe-area-inset-bottom, 0px)) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  padding: 0 2px max(26px, calc(env(safe-area-inset-bottom, 0px) + 18px)) !important;
+}
+
+body.modal-open > .service-picker .service-picker__panel,
+body.booking-open > .service-picker .service-picker__panel,
+body.picker-open > .service-picker .service-picker__panel,
+body.modal-open > .service-picker .service-picker__list,
+body.booking-open > .service-picker .service-picker__list,
+body.picker-open > .service-picker .service-picker__list {
+  overflow-y: auto !important;
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+}
+
+@media (max-width: 380px) {
+  body > .service-picker .service-picker__panel {
+    width: calc(100vw - 12px) !important;
+    max-width: calc(100vw - 12px) !important;
+    max-height: min(86dvh, 720px) !important;
+  }
+
+  body > .service-picker .service-picker__list {
+    max-height: calc(86dvh - 104px - env(safe-area-inset-bottom, 0px)) !important;
+  }
+}
