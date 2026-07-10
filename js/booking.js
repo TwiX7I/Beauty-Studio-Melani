@@ -276,6 +276,7 @@
 
       document.documentElement.classList.add("booking-open", "page-scroll-locked");
       document.body.classList.add("booking-open", "page-scroll-locked");
+      setModalStateClass("reservation-open", true);
       setModalStateClass("modal-open", true);
       updateViewportState();
       document.documentElement.style.overflow = "hidden";
@@ -307,6 +308,7 @@
       });
       document.documentElement.classList.remove("booking-open", "page-scroll-locked");
       document.body.classList.remove("booking-open", "page-scroll-locked");
+      setModalStateClass("reservation-open", false);
       setModalStateClass("modal-open", false);
       clearViewportState();
       pageScrollLock = null;
@@ -815,7 +817,15 @@
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
       updateSummary();
-      window.setTimeout(() => form.elements.name.focus(), 320);
+      if (!document.documentElement.classList.contains("low-performance")) {
+        window.setTimeout(() => {
+          try {
+            form.elements.name.focus({ preventScroll: true });
+          } catch {
+            form.elements.name.focus();
+          }
+        }, 320);
+      }
     }
 
     function close() {

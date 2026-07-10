@@ -7968,3 +7968,238 @@ body.picker-open > .service-picker .service-picker__list {
     max-height: calc(86dvh - 104px - env(safe-area-inset-bottom, 0px)) !important;
   }
 }
+
+
+/* Low-performance safe reservation screen: isolate the form from Android paint glitches. */
+html.low-performance body.reservation-open,
+html.low-performance body.booking-open,
+html.low-performance body.modal-open {
+  background: #fff8fb !important;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+}
+
+html.low-performance body.reservation-open .mobile-page,
+html.low-performance body.booking-open .mobile-page,
+html.low-performance body.modal-open .mobile-page {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+html.low-performance body.reservation-open .floating-whatsapp,
+html.low-performance body.booking-open .floating-whatsapp,
+html.low-performance body.modal-open .floating-whatsapp,
+html.low-performance body.reservation-open .whatsapp-float,
+html.low-performance body.booking-open .whatsapp-float,
+html.low-performance body.modal-open .whatsapp-float {
+  display: none !important;
+}
+
+html.low-performance .booking-modal.is-open {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 20000 !important;
+  display: block !important;
+  width: 100vw !important;
+  max-width: 100vw !important;
+  height: var(--booking-viewport-height, 100dvh) !important;
+  min-height: var(--booking-viewport-height, 100dvh) !important;
+  padding: 0 !important;
+  background: #fff8fb !important;
+  overflow: hidden !important;
+  isolation: isolate !important;
+  contain: strict !important;
+  pointer-events: auto !important;
+  touch-action: none !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-modal__backdrop {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-sheet {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 20010 !important;
+  display: block !important;
+  width: 100vw !important;
+  max-width: none !important;
+  height: var(--booking-viewport-height, 100dvh) !important;
+  min-height: var(--booking-viewport-height, 100dvh) !important;
+  max-height: var(--booking-viewport-height, 100dvh) !important;
+  margin: 0 !important;
+  padding: max(14px, calc(env(safe-area-inset-top, 0px) + 10px)) 16px max(24px, calc(env(safe-area-inset-bottom, 0px) + 18px)) !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: #fff8fb !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+  contain: layout paint !important;
+  will-change: auto !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-sheet__handle {
+  display: none !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-sheet__close {
+  position: fixed !important;
+  top: max(10px, calc(env(safe-area-inset-top, 0px) + 8px)) !important;
+  right: 14px !important;
+  z-index: 20030 !important;
+  width: 42px !important;
+  height: 42px !important;
+  border: 1px solid #ffd2e4 !important;
+  background: #fff !important;
+  box-shadow: none !important;
+  color: #ec0f6c !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-sheet h2 {
+  max-width: min(310px, calc(100vw - 96px)) !important;
+  margin: 8px auto 8px !important;
+  padding-inline: 0 !important;
+  font-size: clamp(1.65rem, 7.2vw, 2.12rem) !important;
+  line-height: 0.98 !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-sheet__intro {
+  max-width: 310px !important;
+  margin: 0 auto 18px !important;
+  font-size: 0.9rem !important;
+  line-height: 1.45 !important;
+}
+
+html.low-performance .booking-modal.is-open #bookingForm {
+  gap: 12px !important;
+  padding-bottom: 10px !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-form__row {
+  gap: 12px !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-field,
+html.low-performance .booking-modal.is-open .booking-resume,
+html.low-performance .booking-modal.is-open .booking-message-preview,
+html.low-performance .booking-modal.is-open .booking-thanks {
+  background: #fff !important;
+  border: 1px solid #ffd7e7 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  contain: layout paint !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-field input,
+html.low-performance .booking-modal.is-open .booking-field textarea,
+html.low-performance .booking-modal.is-open .service-picker-trigger,
+html.low-performance .booking-modal.is-open .date-picker-trigger,
+html.low-performance .booking-modal.is-open .time-picker-trigger,
+html.low-performance .booking-modal.is-open .district-picker-trigger {
+  background: #fff !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-submit {
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+html.low-performance.keyboard-open .booking-modal.is-open .booking-sheet,
+html.low-performance body.keyboard-open .booking-modal.is-open .booking-sheet {
+  height: var(--booking-viewport-height, 100dvh) !important;
+  max-height: var(--booking-viewport-height, 100dvh) !important;
+  padding-top: 10px !important;
+}
+
+html.low-performance.keyboard-open .booking-modal.is-open .booking-sheet h2,
+html.low-performance body.keyboard-open .booking-modal.is-open .booking-sheet h2 {
+  margin-top: 4px !important;
+  font-size: clamp(1.35rem, 6vw, 1.7rem) !important;
+}
+
+html.low-performance.keyboard-open .booking-modal.is-open .booking-sheet__intro,
+html.low-performance body.keyboard-open .booking-modal.is-open .booking-sheet__intro {
+  display: none !important;
+}
+
+html.low-performance body > .service-picker,
+html.low-performance body > .date-picker,
+html.low-performance body > .time-picker,
+html.low-performance body > .district-picker {
+  z-index: 21000 !important;
+  background: transparent !important;
+  touch-action: pan-y !important;
+  contain: layout paint !important;
+}
+
+html.low-performance body > .service-picker .service-picker__backdrop,
+html.low-performance body > .date-picker .date-picker__backdrop,
+html.low-performance body > .time-picker .time-picker__backdrop,
+html.low-performance body > .district-picker .district-picker__backdrop {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  background: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+html.low-performance body > .service-picker .service-picker__panel,
+html.low-performance body > .date-picker .date-picker__panel,
+html.low-performance body > .time-picker .time-picker__panel,
+html.low-performance body > .district-picker .district-picker__panel {
+  background: #fff8fb !important;
+  border: 1px solid #ffd2e4 !important;
+  box-shadow: none !important;
+  filter: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  transform: none !important;
+  transition: none !important;
+  animation: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  pointer-events: auto !important;
+  touch-action: pan-y !important;
+  contain: layout paint !important;
+  will-change: auto !important;
+}
+
+html.low-performance body > .service-picker .service-picker__panel {
+  max-height: min(88dvh, 720px) !important;
+}
+
+html.low-performance body > .service-picker .service-picker__list {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: pan-y !important;
+}
