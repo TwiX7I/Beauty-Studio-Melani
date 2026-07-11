@@ -81,20 +81,19 @@
   function initPerformanceMode() {
     const root = document.documentElement;
     const params = new URLSearchParams(window.location.search);
-    const cores = Number(navigator.hardwareConcurrency || 0);
-    const memory = Number(navigator.deviceMemory || 0);
-    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const isSmallAndroid = /Android/i.test(navigator.userAgent) && window.matchMedia("(max-width: 560px)").matches;
-    const isLowCpu = cores > 0 && cores <= 4;
-    const isLowMemory = memory > 0 && memory <= 4;
-    const savesData = Boolean(connection && connection.saveData);
-    const slowConnection = Boolean(connection && ["slow-2g", "2g", "3g"].includes(connection.effectiveType));
-    const reducesMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const manualLite = params.get("lite") === "1" || params.get("low") === "1";
+    const hardwareConcurrency = navigator.hardwareConcurrency;
+    const deviceMemory = navigator.deviceMemory;
+    const hasLowCpu = typeof hardwareConcurrency === "number" && hardwareConcurrency <= 2;
+    const hasLowMemory = typeof deviceMemory === "number" && deviceMemory <= 2;
+    const forceLite = params.get("lite") === "1" || params.get("low") === "1";
+    const lowPerformance = hasLowCpu || hasLowMemory || forceLite;
 
-    if (manualLite || isSmallAndroid || isLowCpu || isLowMemory || savesData || slowConnection || reducesMotion) {
-      root.classList.add("low-performance");
-    }
+    root.classList.toggle("low-performance", lowPerformance);
+    console.log({
+      hardwareConcurrency,
+      deviceMemory,
+      lowPerformance
+    });
   }
 
   function initPromotionCarousel() {
@@ -158,11 +157,11 @@
     const sections = document.querySelectorAll(".section, .benefits, .about-card, .final-cta, .sweet-footer");
     const staggerGroups = document.querySelectorAll(".benefits, .steps, .services-grid, .promotions-grid, .gallery-grid, .faq-list");
 
-    sections.forEach((section) => section.classList.add("reveal"));
+    sections.forEach((section) => section.classList.add("reveal", "motion-enter"));
 
     staggerGroups.forEach((group) => {
       [...group.children].forEach((child, index) => {
-        child.classList.add("reveal", "reveal-card");
+        child.classList.add("reveal", "reveal-card", "motion-enter");
         child.style.setProperty("--reveal-delay", `${Math.min(index * 80, 320)}ms`);
       });
     });

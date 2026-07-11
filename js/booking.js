@@ -208,10 +208,23 @@
     let pageScrollLock = null;
     let touchStartY = 0;
     let focusScrollTimer = 0;
+    const animationTimers = new WeakMap();
 
     function setModalStateClass(name, enabled) {
       document.documentElement.classList.toggle(name, enabled);
       document.body.classList.toggle(name, enabled);
+    }
+
+    function markAnimating(element) {
+      if (!element) return;
+      window.clearTimeout(animationTimers.get(element));
+      element.classList.add("is-animating");
+      const duration = document.documentElement.classList.contains("low-performance") ? 180 : 280;
+      const timer = window.setTimeout(() => {
+        element.classList.remove("is-animating");
+        animationTimers.delete(element);
+      }, duration);
+      animationTimers.set(element, timer);
     }
 
     function updateViewportState() {
@@ -353,10 +366,12 @@
     function markSecondaryPickerOpen(picker) {
       if (!picker) return;
       picker.hidden = false;
+      markAnimating(picker);
       document.body.classList.add("picker-open");
     }
 
     function markSecondaryPickerClosed(picker) {
+      markAnimating(picker);
       window.setTimeout(() => {
         if (picker && !picker.classList.contains("is-open")) picker.hidden = true;
         document.body.classList.toggle("picker-open", hasOpenSecondaryPicker());
@@ -814,6 +829,7 @@
       if (previewEditor) previewEditor.hidden = true;
       if (editPreviewButton) editPreviewButton.textContent = "Editar mensaje";
       lockPageScroll();
+      markAnimating(modal);
       modal.classList.add("is-open");
       modal.setAttribute("aria-hidden", "false");
       updateSummary();
@@ -833,6 +849,7 @@
       closeDatePicker();
       closeTimePicker();
       closeDistrictPicker();
+      markAnimating(modal);
       modal.classList.remove("is-open");
       modal.setAttribute("aria-hidden", "true");
       document.body.classList.remove("picker-open");

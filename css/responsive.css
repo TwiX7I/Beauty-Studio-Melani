@@ -6643,9 +6643,17 @@ body.booking-open .floating-whatsapp,
 
 .low-performance .reveal,
 .low-performance .reveal-card {
+  opacity: 0 !important;
+  transform: translateY(6px) !important;
+  transition:
+    opacity 150ms linear var(--reveal-delay, 0ms),
+    transform 160ms ease-out var(--reveal-delay, 0ms) !important;
+}
+
+.low-performance .reveal.is-visible,
+.low-performance .reveal-card.is-visible {
   opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
+  transform: translateY(0) !important;
 }
 
 .low-performance .floating-whatsapp {
@@ -6667,9 +6675,8 @@ body.booking-open .floating-whatsapp,
 .low-performance .date-picker *,
 .low-performance .time-picker *,
 .low-performance .district-picker * {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
+  transition-duration: 120ms !important;
+  transition-property: opacity, transform !important;
 }
 
 .low-performance .booking-sheet,
@@ -7020,9 +7027,6 @@ html.low-performance body {
 html.low-performance *,
 html.low-performance *::before,
 html.low-performance *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.12s !important;
   scroll-behavior: auto !important;
 }
 
@@ -8044,8 +8048,10 @@ html.low-performance .booking-modal.is-open .booking-sheet {
   filter: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  transform: none !important;
-  transition: none !important;
+  transform: translateY(0) !important;
+  transition:
+    opacity 100ms linear,
+    transform 120ms ease-out !important;
   animation: none !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
@@ -8181,8 +8187,10 @@ html.low-performance body > .district-picker .district-picker__panel {
   filter: none !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  transform: none !important;
-  transition: none !important;
+  transform: translateY(7px) !important;
+  transition:
+    opacity 100ms linear,
+    transform 120ms ease-out !important;
   animation: none !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
@@ -8202,4 +8210,402 @@ html.low-performance body > .service-picker .service-picker__list {
   overflow-y: auto !important;
   -webkit-overflow-scrolling: touch !important;
   touch-action: pan-y !important;
+}
+
+
+/* Safe motion restore: mobile keeps movement without blur, filters or animated shadows. */
+:root {
+  --safe-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal,
+.motion-enter {
+  opacity: 0 !important;
+  transform: translateY(14px) scale(0.99) !important;
+  transition:
+    opacity 340ms ease-out var(--reveal-delay, 0ms),
+    transform 380ms var(--safe-motion-ease) var(--reveal-delay, 0ms) !important;
+  will-change: auto !important;
+}
+
+.reveal-card {
+  transform: translateY(12px) scale(0.985) !important;
+}
+
+.reveal.is-visible,
+.motion-enter.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+.brand,
+.hero__copy h1,
+.hero__copy > p,
+.hero__model-wrap,
+.hero__actions,
+.hero__model,
+.service-card,
+.promotion-card,
+.gallery-card,
+.about-card,
+.final-cta,
+.service-card img,
+.promotion-card img,
+.gallery-card img,
+.about-card__portrait {
+  will-change: auto !important;
+}
+
+.hero .button--primary {
+  animation: safeButtonFloat 3s ease-in-out infinite !important;
+}
+
+.service-card.is-visible img,
+.promotion-card.is-visible img,
+.gallery-card.is-visible img,
+.about-card.is-visible .about-card__portrait {
+  animation: safeImageIn 420ms var(--safe-motion-ease) both !important;
+}
+
+.hero__model,
+.service-card img,
+.promotion-card img,
+.gallery-card img,
+.about-card__portrait {
+  transition:
+    transform 280ms var(--safe-motion-ease),
+    opacity 280ms ease-out !important;
+}
+
+.benefits article,
+.step-card,
+.service-card,
+.promotion-card,
+.gallery-card,
+.faq-item,
+.zone-card,
+.about-card,
+.final-cta {
+  transition:
+    transform 130ms ease-out,
+    opacity 130ms ease-out !important;
+}
+
+.button,
+.card-button,
+.coverage-button,
+.service-button,
+.booking-submit,
+.promotions-next,
+.faq-item > button,
+.menu-button,
+.service-picker__option,
+.date-picker__day,
+.date-picker__nav,
+.date-picker__text-button,
+.time-picker__option,
+.time-picker__button,
+.district-picker__option {
+  transition:
+    transform 110ms ease-out,
+    opacity 110ms ease-out !important;
+}
+
+.button:active,
+.card-button:active,
+.coverage-button:active,
+.service-button:active,
+.booking-submit:active,
+.promotions-next:active,
+.faq-item > button:active,
+.menu-button:active,
+.service-picker__option:active,
+.date-picker__day:active,
+.date-picker__nav:active,
+.date-picker__text-button:active,
+.time-picker__option:active,
+.time-picker__button:active,
+.district-picker__option:active {
+  transform: scale(0.98) !important;
+  filter: none !important;
+}
+
+.button:active,
+.card-button:active,
+.coverage-button:active,
+.service-button:active,
+.booking-submit:active,
+.promotions-next:active,
+.faq-item > button:active,
+.menu-button:active {
+  filter: none !important;
+}
+
+.service-picker-trigger svg,
+.date-picker-trigger svg,
+.time-picker-trigger svg,
+.district-picker-trigger svg,
+.faq-item > button svg {
+  transition:
+    transform 150ms ease-out,
+    opacity 150ms ease-out !important;
+}
+
+.service-picker-trigger[aria-expanded="true"] svg,
+.date-picker-trigger[aria-expanded="true"] svg,
+.time-picker-trigger[aria-expanded="true"] svg,
+.district-picker-trigger[aria-expanded="true"] svg,
+.faq-item.is-open > button svg {
+  transform: rotate(180deg) !important;
+}
+
+.faq-item__answer {
+  transition: none !important;
+}
+
+.faq-item__answer p {
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out !important;
+}
+
+.service-picker__option.is-selected,
+.date-picker__day.is-selected,
+.time-picker__option.is-selected,
+.district-picker__option.is-selected {
+  animation: safeSelect 160ms ease-out both !important;
+}
+
+.booking-field {
+  transition:
+    transform 120ms ease-out,
+    opacity 120ms ease-out !important;
+}
+
+.booking-field:focus-within {
+  transform: translateY(-1px) !important;
+}
+
+.booking-modal .booking-sheet {
+  opacity: 0 !important;
+  transform: translateY(16px) !important;
+  transition:
+    opacity 160ms ease-out,
+    transform 180ms var(--safe-motion-ease) !important;
+  will-change: auto !important;
+}
+
+.booking-modal.is-open .booking-sheet {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.booking-modal.is-animating {
+  visibility: visible !important;
+}
+
+.booking-modal.is-animating:not(.is-open) {
+  pointer-events: none !important;
+}
+
+.booking-modal.is-animating .booking-sheet,
+body > .service-picker.is-animating .service-picker__panel,
+body > .date-picker.is-animating .date-picker__panel,
+body > .time-picker.is-animating .time-picker__panel,
+body > .district-picker.is-animating .district-picker__panel {
+  will-change: transform, opacity !important;
+}
+
+body > .service-picker .service-picker__panel,
+body > .date-picker .date-picker__panel,
+body > .time-picker .time-picker__panel,
+body > .district-picker .district-picker__panel {
+  opacity: 0 !important;
+  transform: translateY(12px) !important;
+  transition:
+    opacity 140ms ease-out,
+    transform 160ms var(--safe-motion-ease) !important;
+  will-change: auto !important;
+}
+
+.service-picker__backdrop,
+.date-picker__backdrop,
+.time-picker__backdrop,
+.district-picker__backdrop {
+  transition: opacity 120ms ease-out !important;
+}
+
+body > .service-picker.is-open .service-picker__panel,
+body > .date-picker.is-open .date-picker__panel,
+body > .time-picker.is-open .time-picker__panel,
+body > .district-picker.is-open .district-picker__panel {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+body.reservation-open .hero *,
+body.reservation-open .mobile-page *,
+body.booking-open .hero *,
+body.booking-open .mobile-page * {
+  animation-play-state: paused !important;
+}
+
+body.reservation-open .floating-whatsapp,
+body.booking-open .floating-whatsapp,
+body.picker-open .floating-whatsapp {
+  animation: none !important;
+}
+
+html.low-performance .reveal,
+html.low-performance .motion-enter {
+  opacity: 0 !important;
+  transform: translateY(5px) !important;
+  transition:
+    opacity 130ms linear var(--reveal-delay, 0ms),
+    transform 140ms ease-out var(--reveal-delay, 0ms) !important;
+}
+
+html.low-performance .reveal.is-visible,
+html.low-performance .motion-enter.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+html.low-performance .hero .button--primary,
+html.low-performance .floating-whatsapp {
+  animation: none !important;
+}
+
+html.low-performance .header,
+html.low-performance .hero__copy,
+html.low-performance .hero__actions,
+html.low-performance .hero__model-wrap {
+  animation: safeLowHeroIn 170ms ease-out both !important;
+}
+
+html.low-performance .floating-whatsapp__pulse,
+html.low-performance .floating-whatsapp::before,
+html.low-performance .floating-whatsapp::after,
+html.low-performance .hero__reassurance::after,
+html.low-performance .hero__shade,
+html.low-performance .hero::before,
+html.low-performance .hero::after {
+  display: none !important;
+  animation: none !important;
+}
+
+html.low-performance .booking-modal .booking-sheet,
+html.low-performance .booking-modal.is-open .booking-sheet {
+  transition:
+    opacity 100ms linear,
+    transform 120ms ease-out !important;
+}
+
+html.low-performance .booking-modal .booking-sheet {
+  opacity: 0 !important;
+  transform: translateY(7px) !important;
+}
+
+html.low-performance .booking-modal.is-open .booking-sheet {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+html.low-performance body > .service-picker .service-picker__panel,
+html.low-performance body > .date-picker .date-picker__panel,
+html.low-performance body > .time-picker .time-picker__panel,
+html.low-performance body > .district-picker .district-picker__panel {
+  opacity: 0 !important;
+  transform: translateY(7px) !important;
+  transition:
+    opacity 100ms linear,
+    transform 120ms ease-out !important;
+}
+
+html.low-performance body > .service-picker.is-open .service-picker__panel,
+html.low-performance body > .date-picker.is-open .date-picker__panel,
+html.low-performance body > .time-picker.is-open .time-picker__panel,
+html.low-performance body > .district-picker.is-open .district-picker__panel {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+html.low-performance .button,
+html.low-performance .card-button,
+html.low-performance .coverage-button,
+html.low-performance .service-button,
+html.low-performance .booking-submit,
+html.low-performance .promotions-next,
+html.low-performance .service-picker__option,
+html.low-performance .date-picker__day,
+html.low-performance .time-picker__option,
+html.low-performance .district-picker__option {
+  transition:
+    transform 90ms ease-out,
+    opacity 90ms ease-out !important;
+}
+
+@keyframes safeImageIn {
+  from {
+    opacity: 0.82;
+    transform: scale(0.99);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes safeSelect {
+  from {
+    opacity: 0.75;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes safeButtonFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(-1px);
+    opacity: 0.98;
+  }
+}
+
+@keyframes safeLowHeroIn {
+  from {
+    opacity: 0.88;
+    transform: translateY(5px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal,
+  .motion-enter {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
