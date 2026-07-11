@@ -2,7 +2,7 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const { renderServices, renderPromotions, renderGallery, renderFaqs } = window.MelaniRender;
-  const { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPerformanceMode, initPromotionCarousel, initBusinessInfo, initAnimations } = window.MelaniUI;
+  const { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPerformanceMode, initPromotionCarousel, initBusinessInfo, initAnimations, initPerformanceDebug } = window.MelaniUI;
 
   initPerformanceMode();
   renderServices();
@@ -18,4 +18,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initFloatingWhatsApp();
   initPromotionCarousel();
   initAnimations();
+  initPerformanceDebug();
 });

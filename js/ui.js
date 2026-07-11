@@ -47,9 +47,17 @@
         const target = document.querySelector(link.getAttribute("href"));
         if (!target) return;
         event.preventDefault();
-        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        target.scrollIntoView({ behavior: preferredScrollBehavior(), block: "start" });
       });
     });
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function preferredScrollBehavior() {
+    return document.documentElement.dataset.motion === "lite" || prefersReducedMotion() ? "auto" : "smooth";
   }
 
   function initDirectWhatsappLinks() {
@@ -81,18 +89,81 @@
   function initPerformanceMode() {
     const root = document.documentElement;
     const params = new URLSearchParams(window.location.search);
+    const requestedMotion = params.get("motion");
     const hardwareConcurrency = navigator.hardwareConcurrency;
     const deviceMemory = navigator.deviceMemory;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
     const hasLowCpu = typeof hardwareConcurrency === "number" && hardwareConcurrency <= 2;
     const hasLowMemory = typeof deviceMemory === "number" && deviceMemory <= 2;
-    const forceLite = params.get("lite") === "1" || params.get("low") === "1";
-    const lowPerformance = hasLowCpu || hasLowMemory || forceLite;
+    const saveData = Boolean(connection && connection.saveData);
+    const forceLite = requestedMotion === "lite" || params.get("lite") === "1" || params.get("low") === "1";
+    const forceBalanced = requestedMotion === "balanced";
+    const forceFull = requestedMotion === "full";
+    const performanceDebug = params.get("performance-debug") === "1";
+    const fullCandidate = typeof hardwareConcurrency === "number"
+      && hardwareConcurrency >= 6
+      && (typeof deviceMemory !== "number" || deviceMemory >= 4);
+    let motionProfile = "balanced";
 
-    root.classList.toggle("low-performance", lowPerformance);
+    if (forceFull) {
+      motionProfile = "full";
+    } else if (forceBalanced) {
+      motionProfile = "balanced";
+    } else if (forceLite || hasLowCpu || hasLowMemory || saveData || prefersReducedMotion()) {
+      motionProfile = "lite";
+    } else if (fullCandidate) {
+      motionProfile = "full";
+    }
+
+    root.dataset.motion = motionProfile;
+    root.classList.toggle("low-performance", motionProfile === "lite");
+    root.classList.toggle("performance-debug", performanceDebug);
+
+    if (performanceDebug && !window.__melaniPerformanceDebugReady) {
+      window.__melaniPerformanceDebugReady = true;
+      window.__melaniPerformanceErrors = [];
+      window.addEventListener("error", (event) => {
+        window.__melaniPerformanceErrors.push({
+          type: "error",
+          message: event.message,
+          source: event.filename,
+          line: event.lineno
+        });
+      });
+      window.addEventListener("unhandledrejection", (event) => {
+        window.__melaniPerformanceErrors.push({
+          type: "unhandledrejection",
+          message: String(event.reason?.message || event.reason || "Unknown rejection")
+        });
+      });
+    }
+
+    document.addEventListener("visibilitychange", () => {
+      root.classList.toggle("page-hidden", document.hidden);
+    });
+  }
+
+  function initPerformanceDebug() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("performance-debug") !== "1") return;
+    const root = document.documentElement;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]').length;
+    const eagerImages = document.querySelectorAll('img:not([loading="lazy"])').length;
+    const animatedElements = document.querySelectorAll(".motion-enter, .reveal, .hero-motion").length;
+
     console.log({
-      hardwareConcurrency,
-      deviceMemory,
-      lowPerformance
+      motionProfile: root.dataset.motion || "balanced",
+      hardwareConcurrency: navigator.hardwareConcurrency,
+      deviceMemory: navigator.deviceMemory,
+      saveData: Boolean(connection && connection.saveData),
+      effectiveType: connection?.effectiveType,
+      reducedMotion: prefersReducedMotion(),
+      animatedElements,
+      lazyImages,
+      eagerImages,
+      initialLoadMs: Math.round(performance.now()),
+      errorsDetected: window.__melaniPerformanceErrors || []
     });
   }
 
@@ -104,6 +175,7 @@
 
     const cards = [...track.querySelectorAll(".promotion-card")];
     if (!cards.length) return;
+    let scrollFrame = 0;
 
     function setActiveDot(index) {
       dots.forEach((dot, dotIndex) => {
@@ -129,7 +201,7 @@
 
     function goToPromotion(index) {
       const targetIndex = (index + cards.length) % cards.length;
-      cards[targetIndex].scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+      cards[targetIndex].scrollIntoView({ behavior: preferredScrollBehavior(), inline: "start", block: "nearest" });
       setActiveDot(targetIndex);
     }
 
@@ -144,7 +216,11 @@
     });
 
     track.addEventListener("scroll", () => {
-      window.requestAnimationFrame(() => setActiveDot(currentIndex()));
+      if (scrollFrame) return;
+      scrollFrame = window.requestAnimationFrame(() => {
+        scrollFrame = 0;
+        setActiveDot(currentIndex());
+      });
     }, { passive: true });
   }
 
@@ -154,33 +230,109 @@
   }
 
   function initAnimations() {
-    const sections = document.querySelectorAll(".section, .benefits, .about-card, .final-cta, .sweet-footer");
+    const root = document.documentElement;
     const staggerGroups = document.querySelectorAll(".benefits, .steps, .services-grid, .promotions-grid, .gallery-grid, .faq-list");
+    const motionProfile = root.dataset.motion || "balanced";
+    const staggerStep = motionProfile === "full" ? 55 : motionProfile === "balanced" ? 35 : 12;
+    const staggerMax = motionProfile === "full" ? 180 : motionProfile === "balanced" ? 120 : 20;
+    const runningDuration = motionProfile === "full" ? 520 : motionProfile === "balanced" ? 400 : 220;
+    let revealFrame = 0;
 
-    sections.forEach((section) => section.classList.add("reveal", "motion-enter"));
+    function markMotionRunning(element) {
+      element.classList.add("motion-running");
+      window.setTimeout(() => element.classList.remove("motion-running"), runningDuration);
+    }
+
+    function revealElement(element) {
+      element.classList.add("is-visible");
+      element.style.removeProperty("visibility");
+      element.style.removeProperty("opacity");
+      markMotionRunning(element);
+    }
+
+    function revealAllContent() {
+      document
+        .querySelectorAll(".reveal, .hero-reveal, .hero-motion, .motion-enter, [data-reveal]")
+        .forEach(revealElement);
+    }
+
+    function isNearViewport(element, margin = 140) {
+      const rect = element.getBoundingClientRect();
+      return rect.bottom >= -margin && rect.top <= window.innerHeight + margin;
+    }
+
+    function revealVisibleContent() {
+      document
+        .querySelectorAll(".reveal:not(.is-visible), .hero-reveal:not(.is-visible), .hero-motion:not(.is-visible), .motion-enter:not(.is-visible), [data-reveal]:not(.is-visible)")
+        .forEach((element) => {
+          if (isNearViewport(element)) revealElement(element);
+        });
+    }
+
+    function scheduleRevealCheck() {
+      if (revealFrame) return;
+      revealFrame = window.requestAnimationFrame(() => {
+        revealFrame = 0;
+        revealVisibleContent();
+      });
+    }
+
+    document.querySelectorAll(".section, .benefits, .about-card, .final-cta, .sweet-footer, .footer-premium, .zone-card, .hero-benefits").forEach((section) => {
+      section.classList.add("reveal", "motion-enter");
+      section.dataset.reveal = "";
+    });
 
     staggerGroups.forEach((group) => {
       [...group.children].forEach((child, index) => {
         child.classList.add("reveal", "reveal-card", "motion-enter");
-        child.style.setProperty("--reveal-delay", `${Math.min(index * 80, 320)}ms`);
+        child.dataset.reveal = "";
+        child.style.setProperty("--reveal-delay", `${Math.min(index * staggerStep, staggerMax)}ms`);
       });
     });
 
-    const elements = document.querySelectorAll(".reveal");
+    const heroItems = [
+      document.querySelector(".brand"),
+      document.querySelector(".hero__copy"),
+      document.querySelector(".hero__eyebrow"),
+      document.querySelector(".hero__copy h1"),
+      document.querySelector(".hero__copy p:not(.hero__eyebrow)"),
+      document.querySelector(".hero__actions"),
+      document.querySelector(".hero__model-wrap"),
+      document.querySelector(".quick-benefits-card, .benefits")
+    ].filter(Boolean);
+
+    heroItems.forEach((element, index) => {
+      element.classList.add("hero-motion", "motion-enter");
+      element.style.setProperty("--reveal-delay", `${Math.min(index * staggerStep, staggerMax)}ms`);
+    });
+
+    root.classList.add("motion-ready");
+
+    window.requestAnimationFrame(() => {
+      document
+        .querySelectorAll(".hero .reveal, .hero-reveal, .hero [data-reveal], .hero .motion-enter")
+        .forEach(revealElement);
+      heroItems.forEach(revealElement);
+    });
+
+    window.setTimeout(revealVisibleContent, 1200);
+    window.addEventListener("scroll", scheduleRevealCheck, { passive: true });
+    window.addEventListener("resize", scheduleRevealCheck, { passive: true });
+
+    const elements = document.querySelectorAll(".reveal, .hero-reveal, .motion-enter, [data-reveal]");
     if (!("IntersectionObserver" in window)) {
-      elements.forEach((element) => element.classList.add("is-visible"));
+      revealAllContent();
       return;
     }
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          observer.unobserve(entry.target);
-        }
+        if (!entry.isIntersecting) return;
+        revealElement(entry.target);
+        observer.unobserve(entry.target);
       });
-    }, { threshold: 0.1, rootMargin: "0px 0px -8% 0px" });
+    }, { threshold: 0.01, rootMargin: "80px 0px 80px 0px" });
     elements.forEach((element) => observer.observe(element));
   }
 
-  window.MelaniUI = { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPerformanceMode, initPromotionCarousel, initBusinessInfo, initAnimations };
+  window.MelaniUI = { initMenu, initFaqs, initSmoothScroll, initFloatingWhatsApp, initPerformanceMode, initPromotionCarousel, initBusinessInfo, initAnimations, initPerformanceDebug };
 })();

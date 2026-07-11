@@ -144,6 +144,14 @@
     return Object.fromEntries(new FormData(form));
   }
 
+  function debounce(fn, delay = 120) {
+    let timer = 0;
+    return (...args) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => fn(...args), delay);
+    };
+  }
+
   function createIconUse(name) {
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("aria-hidden", "true");
@@ -209,6 +217,19 @@
     let touchStartY = 0;
     let focusScrollTimer = 0;
     const animationTimers = new WeakMap();
+    const motionDurations = {
+      full: 320,
+      balanced: 240,
+      lite: 160
+    };
+
+    function currentMotionProfile() {
+      return document.documentElement.dataset.motion || (document.documentElement.classList.contains("low-performance") ? "lite" : "balanced");
+    }
+
+    function currentMotionDuration() {
+      return motionDurations[currentMotionProfile()] || motionDurations.balanced;
+    }
 
     function setModalStateClass(name, enabled) {
       document.documentElement.classList.toggle(name, enabled);
@@ -219,7 +240,7 @@
       if (!element) return;
       window.clearTimeout(animationTimers.get(element));
       element.classList.add("is-animating");
-      const duration = document.documentElement.classList.contains("low-performance") ? 180 : 280;
+      const duration = currentMotionDuration();
       const timer = window.setTimeout(() => {
         element.classList.remove("is-animating");
         animationTimers.delete(element);
@@ -375,7 +396,7 @@
       window.setTimeout(() => {
         if (picker && !picker.classList.contains("is-open")) picker.hidden = true;
         document.body.classList.toggle("picker-open", hasOpenSecondaryPicker());
-      }, 180);
+      }, currentMotionDuration());
     }
 
     function selectedItem() {
@@ -446,6 +467,8 @@
       if (preview) preview.textContent = previewText;
       if (previewEditor && previewEditor.hidden) previewEditor.value = previewText;
     }
+
+    const updateSummaryDebounced = debounce(updateSummary, 120);
 
     function setCompletedState(field) {
       const label = field.closest("label");
@@ -958,7 +981,7 @@
       field.addEventListener("input", () => {
         if (field.closest("label")?.classList.contains("is-invalid")) validate(field);
         setCompletedState(field);
-        updateSummary();
+        updateSummaryDebounced();
       });
       field.addEventListener("change", () => {
         validate(field);

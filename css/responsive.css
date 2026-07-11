@@ -8609,3 +8609,633 @@ html.low-performance .district-picker__option {
     transform: none !important;
   }
 }
+
+/* Content visibility safety: animations must never hide real content permanently. */
+.reveal,
+.hero-reveal,
+.hero-motion,
+.motion-enter,
+[data-reveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html:not(.motion-ready) .reveal,
+html:not(.motion-ready) .hero-reveal,
+html:not(.motion-ready) .hero-motion,
+html:not(.motion-ready) .motion-enter,
+html:not(.motion-ready) [data-reveal],
+html.low-performance:not(.motion-ready) .reveal,
+html.low-performance:not(.motion-ready) .hero-reveal,
+html.low-performance:not(.motion-ready) .hero-motion,
+html.low-performance:not(.motion-ready) .motion-enter,
+html.low-performance:not(.motion-ready) [data-reveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+html.motion-ready .reveal:not(.is-visible),
+html.motion-ready .hero-reveal:not(.is-visible),
+html.motion-ready .hero-motion:not(.is-visible),
+html.motion-ready .motion-enter:not(.is-visible),
+html.motion-ready [data-reveal]:not(.is-visible) {
+  opacity: 0 !important;
+  visibility: visible !important;
+  transform: translateY(var(--motion-distance-medium, 12px)) scale(0.99) !important;
+}
+
+html.motion-ready .reveal-card:not(.is-visible) {
+  transform: translateY(var(--motion-distance-small, 6px)) scale(0.99) !important;
+}
+
+.reveal.is-visible,
+.hero-reveal.is-visible,
+.hero-motion.is-visible,
+.motion-enter.is-visible,
+[data-reveal].is-visible,
+.hero .reveal,
+.hero .hero-reveal,
+.hero .hero-motion,
+.hero .motion-enter,
+.hero [data-reveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+.hero__copy,
+.hero__copy *,
+.hero-benefits,
+.hero-benefits *,
+.zone-card,
+.zone-card *,
+.coverage-button,
+.section-heading,
+.section-heading *,
+.footer-premium,
+.footer-premium *,
+.about-card,
+.about-card *,
+.final-cta,
+.final-cta * {
+  visibility: visible !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .mobile-page {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .hero,
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .section,
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .footer-premium {
+  content-visibility: visible !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .zone-card {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) #zonas,
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .section--compact {
+  min-height: 0 !important;
+}
+
+
+/* Final motion profiles: full, balanced and lite share one safe animation system. */
+:root {
+  --motion-fast: 110ms;
+  --motion-medium: 190ms;
+  --motion-slow: 320ms;
+  --motion-distance-small: 6px;
+  --motion-distance-medium: 12px;
+  --motion-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --motion-ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --safe-motion-ease: var(--motion-ease-out);
+}
+
+html[data-motion="full"] {
+  --motion-fast: 130ms;
+  --motion-medium: 240ms;
+  --motion-slow: 420ms;
+  --motion-distance-small: 8px;
+  --motion-distance-medium: 16px;
+}
+
+html[data-motion="balanced"] {
+  --motion-fast: 110ms;
+  --motion-medium: 190ms;
+  --motion-slow: 320ms;
+  --motion-distance-small: 6px;
+  --motion-distance-medium: 12px;
+}
+
+html[data-motion="lite"] {
+  --motion-fast: 80ms;
+  --motion-medium: 130ms;
+  --motion-slow: 180ms;
+  --motion-distance-small: 3px;
+  --motion-distance-medium: 6px;
+}
+
+.motion-enter,
+.hero-motion,
+.reveal {
+  opacity: 0 !important;
+  transform: translateY(var(--motion-distance-medium)) scale(0.99) !important;
+  transition:
+    opacity var(--motion-slow) ease-out var(--reveal-delay, 0ms),
+    transform var(--motion-slow) var(--motion-ease-out) var(--reveal-delay, 0ms) !important;
+  will-change: auto !important;
+}
+
+.reveal-card {
+  transform: translateY(var(--motion-distance-small)) scale(0.99) !important;
+}
+
+.motion-enter.is-visible,
+.hero-motion.is-visible,
+.reveal.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+.motion-running,
+.booking-modal.is-animating .booking-sheet,
+body > .service-picker.is-animating .service-picker__panel,
+body > .date-picker.is-animating .date-picker__panel,
+body > .time-picker.is-animating .time-picker__panel,
+body > .district-picker.is-animating .district-picker__panel {
+  will-change: transform, opacity !important;
+}
+
+.brand,
+.hero__copy h1,
+.hero__copy > p,
+.hero__model-wrap,
+.hero__actions,
+.hero__model,
+.service-card,
+.promotion-card,
+.gallery-card,
+.about-card,
+.final-cta,
+.service-card img,
+.promotion-card img,
+.gallery-card img,
+.about-card__portrait {
+  will-change: auto !important;
+}
+
+.hero-motion,
+.hero__model-wrap.hero-motion {
+  animation: none !important;
+}
+
+.hero__model {
+  transform: translateX(0) !important;
+  transition:
+    opacity var(--motion-slow) ease-out,
+    transform var(--motion-slow) var(--motion-ease-out) !important;
+}
+
+.button,
+.card-button,
+.coverage-button,
+.service-button,
+.booking-submit,
+.promotions-next,
+.faq-item > button,
+.menu-button,
+.service-picker__option,
+.date-picker__day,
+.date-picker__nav,
+.date-picker__text-button,
+.time-picker__option,
+.time-picker__button,
+.district-picker__option,
+.catalog-chip {
+  transition:
+    transform var(--motion-fast) ease-out,
+    opacity var(--motion-fast) ease-out !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.button:active,
+.card-button:active,
+.coverage-button:active,
+.service-button:active,
+.booking-submit:active,
+.promotions-next:active,
+.faq-item > button:active,
+.menu-button:active,
+.service-picker__option:active,
+.date-picker__day:active,
+.date-picker__nav:active,
+.date-picker__text-button:active,
+.time-picker__option:active,
+.time-picker__button:active,
+.district-picker__option:active,
+.catalog-chip:active {
+  opacity: 0.96 !important;
+  transform: scale(0.98) !important;
+  filter: none !important;
+}
+
+.benefits article,
+.step-card,
+.service-card,
+.promotion-card,
+.gallery-card,
+.faq-item,
+.zone-card,
+.about-card,
+.final-cta {
+  transition:
+    opacity var(--motion-fast) ease-out,
+    transform var(--motion-fast) ease-out !important;
+}
+
+.hero__model,
+.service-card img,
+.promotion-card img,
+.gallery-card img,
+.about-card__portrait {
+  transition:
+    opacity var(--motion-medium) ease-out,
+    transform var(--motion-medium) var(--motion-ease-out) !important;
+}
+
+.service-card.is-visible img,
+.promotion-card.is-visible img,
+.gallery-card.is-visible img,
+.about-card.is-visible .about-card__portrait {
+  animation: safeImageIn var(--motion-medium) var(--motion-ease-out) both !important;
+}
+
+.booking-modal .booking-sheet {
+  opacity: 0 !important;
+  transform: translateY(var(--motion-distance-medium)) !important;
+  transition:
+    opacity var(--motion-medium) ease-out,
+    transform var(--motion-medium) var(--motion-ease-out) !important;
+  will-change: auto !important;
+}
+
+.booking-modal.is-open .booking-sheet {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+body > .service-picker .service-picker__panel,
+body > .date-picker .date-picker__panel,
+body > .time-picker .time-picker__panel,
+body > .district-picker .district-picker__panel {
+  opacity: 0 !important;
+  transform: translateY(var(--motion-distance-small)) !important;
+  transition:
+    opacity var(--motion-medium) ease-out,
+    transform var(--motion-medium) var(--motion-ease-out) !important;
+  will-change: auto !important;
+}
+
+body > .service-picker.is-open .service-picker__panel,
+body > .date-picker.is-open .date-picker__panel,
+body > .time-picker.is-open .time-picker__panel,
+body > .district-picker.is-open .district-picker__panel {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.service-picker__backdrop,
+.date-picker__backdrop,
+.time-picker__backdrop,
+.district-picker__backdrop,
+.booking-modal__backdrop {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  filter: none !important;
+  transition: opacity var(--motion-fast) ease-out !important;
+}
+
+.booking-field {
+  transition:
+    opacity var(--motion-fast) ease-out,
+    transform var(--motion-fast) ease-out !important;
+}
+
+.booking-field:focus-within {
+  transform: translateY(-1px) !important;
+}
+
+.service-picker-trigger svg,
+.date-picker-trigger svg,
+.time-picker-trigger svg,
+.district-picker-trigger svg,
+.faq-item > button svg {
+  transition:
+    opacity var(--motion-fast) ease-out,
+    transform var(--motion-fast) ease-out !important;
+}
+
+.service-picker-trigger[aria-expanded="true"] svg,
+.date-picker-trigger[aria-expanded="true"] svg,
+.time-picker-trigger[aria-expanded="true"] svg,
+.district-picker-trigger[aria-expanded="true"] svg,
+.faq-item.is-open > button svg {
+  transform: rotate(180deg) !important;
+}
+
+.faq-item__answer {
+  transition: none !important;
+}
+
+.faq-item__answer p {
+  transition:
+    opacity var(--motion-fast) ease-out,
+    transform var(--motion-fast) ease-out !important;
+}
+
+.service-picker__option.is-selected,
+.date-picker__day.is-selected,
+.time-picker__option.is-selected,
+.district-picker__option.is-selected {
+  animation: safeSelect var(--motion-medium) ease-out both !important;
+}
+
+.floating-whatsapp .whatsapp-floating-logo {
+  transform: none !important;
+}
+
+.floating-whatsapp::before,
+.floating-whatsapp::after {
+  display: none !important;
+  animation: none !important;
+}
+
+html[data-motion="full"] .floating-whatsapp {
+  animation: whatsappSafePulse 3s ease-in-out infinite !important;
+}
+
+html[data-motion="balanced"] .floating-whatsapp {
+  animation: whatsappSafePulse 4s ease-in-out infinite !important;
+}
+
+html[data-motion="full"] .floating-whatsapp__pulse,
+html[data-motion="balanced"] .floating-whatsapp__pulse {
+  display: block !important;
+  animation: whatsappPulseRing 2.8s infinite ease-out !important;
+}
+
+html[data-motion="full"] .floating-whatsapp__pulse--two,
+html[data-motion="balanced"] .floating-whatsapp__pulse--two {
+  animation-delay: 1.4s !important;
+}
+
+html[data-motion="lite"] .floating-whatsapp,
+html.low-performance .floating-whatsapp {
+  animation: whatsappSafePulse 4.8s ease-in-out infinite !important;
+}
+
+html[data-motion="lite"] .floating-whatsapp__pulse,
+html.low-performance .floating-whatsapp__pulse {
+  display: none !important;
+  animation: none !important;
+}
+
+html[data-motion="lite"] .hero .button--primary,
+html.low-performance .hero .button--primary {
+  animation: none !important;
+}
+
+html[data-motion="lite"] .hero__shade,
+html[data-motion="lite"] .hero::before,
+html[data-motion="lite"] .hero::after,
+html[data-motion="lite"] .hero__reassurance::after,
+html.low-performance .hero__shade,
+html.low-performance .hero::before,
+html.low-performance .hero::after,
+html.low-performance .hero__reassurance::after {
+  display: none !important;
+  animation: none !important;
+}
+
+body.reservation-open .hero *,
+body.reservation-open .mobile-page *,
+body.booking-open .hero *,
+body.booking-open .mobile-page *,
+html.page-hidden *,
+html.performance-debug.page-hidden * {
+  animation-play-state: paused !important;
+}
+
+body.reservation-open .floating-whatsapp,
+body.booking-open .floating-whatsapp,
+body.picker-open .floating-whatsapp {
+  animation: none !important;
+}
+
+.service-card__media,
+.gallery-card,
+.promotion-card {
+  contain: layout paint;
+}
+
+.service-card__media img,
+.service-card img,
+.gallery-card img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.promotion-card img {
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+@media (max-width: 768px) {
+  .header,
+  .hero__eyebrow,
+  .hero__reassurance,
+  .quick-benefits-card,
+  .benefits article,
+  .section-heading,
+  .step-card,
+  .service-card,
+  .promotion-card,
+  .gallery-card,
+  .faq-item,
+  .zone-card,
+  .about-card,
+  .final-cta,
+  .booking-modal__backdrop,
+  .service-picker__backdrop,
+  .date-picker__backdrop,
+  .time-picker__backdrop,
+  .district-picker__backdrop,
+  .booking-sheet,
+  .service-picker__panel,
+  .date-picker__panel,
+  .time-picker__panel,
+  .district-picker__panel {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .button,
+  .card-button,
+  .coverage-button,
+  .service-button,
+  .booking-submit,
+  .promotions-next,
+  .catalog-chip,
+  .booking-field,
+  .service-picker__option,
+  .date-picker__day,
+  .time-picker__option,
+  .district-picker__option {
+    transition:
+      opacity var(--motion-fast) ease-out,
+      transform var(--motion-fast) ease-out !important;
+  }
+}
+
+@keyframes whatsappSafePulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.97;
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-enter,
+  .hero-motion,
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Runtime fallback: this must stay after every motion profile rule. */
+.reveal,
+.hero-reveal,
+.hero-motion,
+.motion-enter,
+[data-reveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+html:not(.motion-ready) .reveal,
+html:not(.motion-ready) .hero-reveal,
+html:not(.motion-ready) .hero-motion,
+html:not(.motion-ready) .motion-enter,
+html:not(.motion-ready) [data-reveal],
+html.low-performance:not(.motion-ready) .reveal,
+html.low-performance:not(.motion-ready) .hero-reveal,
+html.low-performance:not(.motion-ready) .hero-motion,
+html.low-performance:not(.motion-ready) .motion-enter,
+html.low-performance:not(.motion-ready) [data-reveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+}
+
+html.motion-ready .reveal:not(.is-visible),
+html.motion-ready .hero-reveal:not(.is-visible),
+html.motion-ready .hero-motion:not(.is-visible),
+html.motion-ready .motion-enter:not(.is-visible),
+html.motion-ready [data-reveal]:not(.is-visible) {
+  opacity: 0 !important;
+  visibility: visible !important;
+  transform: translateY(var(--motion-distance-medium, 12px)) scale(0.99) !important;
+}
+
+html.motion-ready .reveal-card:not(.is-visible) {
+  transform: translateY(var(--motion-distance-small, 6px)) scale(0.99) !important;
+}
+
+.reveal.is-visible,
+.hero-reveal.is-visible,
+.hero-motion.is-visible,
+.motion-enter.is-visible,
+[data-reveal].is-visible,
+.hero .reveal,
+.hero .hero-reveal,
+.hero .hero-motion,
+.hero .motion-enter,
+.hero [data-reveal] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: translateY(0) scale(1) !important;
+}
+
+.hero__copy,
+.hero__copy *,
+.hero-benefits,
+.hero-benefits *,
+.zone-card,
+.zone-card *,
+.coverage-button,
+.section-heading,
+.section-heading *,
+.footer-premium,
+.footer-premium *,
+.about-card,
+.about-card *,
+.final-cta,
+.final-cta * {
+  visibility: visible !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .mobile-page {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .hero,
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .section,
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .footer-premium {
+  content-visibility: visible !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .zone-card {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+body:not(.reservation-open):not(.booking-open):not(.modal-open) #zonas,
+body:not(.reservation-open):not(.booking-open):not(.modal-open) .section--compact {
+  min-height: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.motion-ready .reveal,
+  html.motion-ready .hero-reveal,
+  html.motion-ready .hero-motion,
+  html.motion-ready .motion-enter,
+  html.motion-ready [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

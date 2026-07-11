@@ -21,6 +21,11 @@
     return sortedServices(services.filter((service) => service.category === activeServiceCategory));
   }
 
+  function preferredScrollBehavior() {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    return document.documentElement.dataset.motion === "lite" || reducedMotion ? "auto" : "smooth";
+  }
+
   function renderServiceCategoryChips() {
     const container = document.querySelector("#serviceCategories");
     if (!container) return;
@@ -61,7 +66,7 @@
       </article>
     `).join("");
 
-    container.scrollTo?.({ left: 0, behavior: "smooth" });
+    container.scrollTo?.({ left: 0, behavior: preferredScrollBehavior() });
   }
 
   function renderServices() {
